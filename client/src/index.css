@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-4xl;
+  }
+
+  input {
+    @apply bg-primary-50 rounded-sm shadow-md;
+  }
+}
+
+@layer components {
+  .error_msg {
+    @apply text-white text-center tracking-normal font-bold;
+  }
+}
