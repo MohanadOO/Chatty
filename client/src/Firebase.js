@@ -15,8 +15,11 @@ import {
   arrayRemove,
   getDoc,
   doc,
+  getDocs,
 } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
+import { nanoid } from 'nanoid'
+import toast from 'react-hot-toast'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -48,16 +51,34 @@ export function useAuth() {
 }
 
 //Get User Rooms if Exist.
-export const getRooms = async (currentUser) => {
+export const getUserRooms = async (currentUser) => {
   try {
     const userDocument = await getDoc(doc(db, 'users', currentUser.uid))
-    const roomsArr = await userDocument._document.data.value.mapValue.fields
-      .rooms.arrayValue.values
+    const roomsArr = userDocument.data()
+
     if (roomsArr === undefined) {
       return undefined
     } else {
       return roomsArr
     }
+  } catch (error) {
+    return console.error(error)
+  }
+}
+
+//Get Rooms details
+export const getRooms = async (userRooms) => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'rooms'))
+    const matchedRoom = []
+    querySnapshot.forEach((doc) => {
+      userRooms.rooms.forEach((room) => {
+        if (room.id === doc.id) {
+          matchedRoom.push({ ...doc.data(), id: doc.id })
+        }
+      })
+    })
+    return matchedRoom
   } catch (error) {
     return console.error(error)
   }
@@ -71,11 +92,16 @@ export const addRoomDB = async (currentUser, room) => {
       users: [currentUser.uid],
       owners: [currentUser.uid],
       messages: [],
+      roomAvatar: `https://avatars.dicebear.com/api/identicon/${nanoid(
+        10
+      )}.svg?radius=50`,
+    }).then((docRef) => {
+      updateDoc(doc(db, 'users', currentUser.uid), {
+        rooms: arrayUnion({ name: room, id: docRef.id }),
+      })
     })
-    await updateDoc(doc(db, 'users', currentUser.uid), {
-      rooms: arrayUnion(room),
-    })
-    console.log('Create Room')
+
+    toast.success('Room Created 👍')
   } catch (error) {
     console.error(error)
   }
