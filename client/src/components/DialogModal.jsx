@@ -11,9 +11,9 @@ export function MyModal() {
   let [isOpen, setIsOpen] = useState(false)
 
   function creteRoom() {
+    setIsOpen(false)
     addRoomDB(currentUser, room)
     setRooms((prevRooms) => [...prevRooms, { stringValue: room }])
-    setIsOpen(false)
     setRoom('')
   }
 
@@ -27,11 +27,11 @@ export function MyModal() {
 
   return (
     <>
-      <div className=' inset-0 flex items-center justify-center'>
+      <div className=' flex items-center justify-center'>
         <button
           type='button'
           onClick={openModal}
-          className=' flex items-center gap-3 rounded-md bg-primary-500 bg-opacity-50 px-4 py-2 text-sm font-medium  hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-white'
+          className=' flex items-center gap-3 rounded-md bg-primary-500 px-8 py-2 text-sm font-medium  hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-white'
         >
           <AddIcon color={'white'} />
           Create Room
