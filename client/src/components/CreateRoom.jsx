@@ -5,20 +5,21 @@ import toast from 'react-hot-toast'
 
 function CreateRoom() {
   const [room, setRoom] = useState('')
-  const { currentUser, socket, rooms, setRooms } = useContext(ChatContext)
+  const { currentUser, socket, userRooms, setUserRooms } =
+    useContext(ChatContext)
 
   //User will create and Join the room.
   const joinRoom = () => {
-    if (rooms !== '') {
-      socket.emit('join_room', rooms)
+    if (userRooms !== '') {
+      socket.emit('join_room', userRooms)
     }
     toast.success(
       <b>
-        Joined Room <span className='text-primary-500'>{rooms}</span>
+        Joined Room <span className='text-primary-500'>{userRooms}</span>
       </b>
     )
     addRoomDB(currentUser, room)
-    setRooms(room)
+    setUserRooms(room)
   }
 
   return (
