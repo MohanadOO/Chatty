@@ -1,5 +1,4 @@
 import Nav from './components/Nav'
-import Footer from './components/Footer'
 import { useState } from 'react'
 import { UserContext } from './Context/UserContext'
 import { Outlet } from 'react-router-dom'
@@ -15,7 +14,6 @@ function App() {
       <Toaster />
       <Nav />
       <Outlet />
-      <Footer />
     </UserContext.Provider>
   )
 }
