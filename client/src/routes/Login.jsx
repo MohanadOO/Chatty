@@ -63,6 +63,13 @@ function Login() {
 
       toast.success('You are logged in 👋')
       localStorage.setItem('loggedIn', true)
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          userName: currentUser.currentUser.displayName,
+          userAvatar: currentUser.currentUser.photoURL,
+        })
+      )
       setUserLoggedIn(true)
       navigate('/chat', { replace: true })
     } catch (error) {
@@ -98,8 +105,15 @@ function Login() {
           console.error(error)
         })
 
-        setUserLoggedIn(true)
         localStorage.setItem('loggedIn', true)
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            userName: currentUser.currentUser.displayName,
+            userAvatar: currentUser.currentUser.photoURL,
+          })
+        )
+        setUserLoggedIn(true)
         navigate('/chat', { replace: true })
       })
       .catch((error) => {
@@ -137,7 +151,7 @@ function Login() {
         <h1 className='text-center mb-5 underline-offset-2'>Log In</h1>
         <div
           onClick={handleGoogleSignIn}
-          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-white w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
+          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
         >
           <GoogleIcon width={20} height={20} />
           <button>Sign in with Google</button>

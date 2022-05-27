@@ -76,6 +76,13 @@ function Signup() {
         console.error(error)
       })
       localStorage.setItem('loggedIn', true)
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          userName: currentUser.currentUser.displayName,
+          userAvatar: currentUser.currentUser.photoURL,
+        })
+      )
       setUserLoggedIn(true)
       navigate('/chat', { replace: true })
     } catch (error) {
@@ -92,16 +99,11 @@ function Signup() {
         error: <b>Try Again</b>,
       })
       .then(() => {
-        localStorage.setItem('loggedIn', true)
-        setUserLoggedIn(true)
-
         const getData = async () => {
           const docRef = doc(db, 'users', currentUser.currentUser.uid)
           const docSnap = await getDoc(docRef)
 
-          if (docSnap.exists()) {
-            console.log('Document data:', docSnap.data())
-          } else {
+          if (!docSnap.exists()) {
             await setDoc(doc(db, 'users', currentUser.currentUser.uid), {
               name: currentUser.currentUser.displayName,
               profilePicture: currentUser.currentUser.photoURL,
@@ -109,6 +111,15 @@ function Signup() {
             })
           }
         }
+        localStorage.setItem('loggedIn', true)
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            userName: currentUser.currentUser.displayName,
+            userAvatar: currentUser.currentUser.photoURL,
+          })
+        )
+        setUserLoggedIn(true)
         getData().catch((error) => {
           console.error(error)
         })
@@ -166,7 +177,7 @@ function Signup() {
         <h1 className='text-center mb-5'>Sign Up</h1>
         <div
           onClick={handleGoogleSignUp}
-          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-white w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow'
+          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow'
         >
           <GoogleIcon width={20} height={20} />
           <button>Sign Up with Google</button>
