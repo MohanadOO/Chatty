@@ -108,6 +108,15 @@ export const getAllUsers = async () => {
     console.error(error)
   }
 }
+//Get Messages
+export const getMessages = async (roomId) => {
+  try {
+    const room = await getDoc(doc(db, 'rooms', roomId))
+    return room.data().messages
+  } catch (error) {
+    console.error(error)
+  }
+}
 //Add Room to database
 export const addRoomDB = async (currentUser, room) => {
   const roomAvatar = `https://avatars.dicebear.com/api/identicon/${nanoid(
