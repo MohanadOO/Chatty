@@ -18,8 +18,11 @@ function CreateRoom() {
         Joined Room <span className='text-primary-500'>{userRooms}</span>
       </b>
     )
-    addRoomDB(currentUser, room)
-    setUserRooms(room)
+    addRoomDB(currentUser, room).then((roomInfo) => {
+      setUserRooms((prevRooms) => {
+        return [...prevRooms, roomInfo]
+      })
+    })
   }
 
   return (
