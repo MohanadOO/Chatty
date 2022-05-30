@@ -134,9 +134,19 @@ export const saveMessage = async (roomId, message) => {
     console.error(error)
   }
 }
+export const JoinRoom = async (roomName, roomId, userId) => {
+  try {
+    await updateDoc(doc(db, 'rooms', roomId), {
+      users: arrayUnion(userId),
     })
 
-    toast.success('Room Created 👍')
+    await updateDoc(doc(db, 'users', userId), {
+      rooms: arrayUnion({ name: roomName, id: roomId }),
+    })
+
+    const roomInfo = await getDoc(doc(db, 'rooms', roomId))
+    toast.success('Joined Room ✅')
+    return { ...roomInfo.data(), id: roomInfo.id }
   } catch (error) {
     console.error(error)
   }
