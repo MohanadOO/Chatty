@@ -27,7 +27,7 @@ function ChatArea() {
           ...prevMessages,
           {
             message,
-            sender: currentUser.uid,
+            sender: { name: currentUser.displayName, id: currentUser.uid },
             userProfile: currentUser.photoURL,
           },
         ]
@@ -37,7 +37,7 @@ function ChatArea() {
           ...chat,
           {
             message,
-            sender: currentUser.uid,
+            sender: { name: currentUser.displayName, id: currentUser.uid },
             userProfile: currentUser.photoURL,
           },
         ],
@@ -69,53 +69,53 @@ function ChatArea() {
           </div>
         ) : (
           chat?.map((message, index) => {
-          return (
+            return (
               <div className='ml-5' key={index}>
                 {message.sender.id === currentUser.uid ? (
-                <div className='flex items-center gap-3'>
-                  <img
-                    className='rounded-md w-7 self-start'
-                    src={
-                      JSON.parse(localStorage.getItem('user')).userAvatar ||
-                      currentUser?.photoURL
-                    }
-                    alt='user_icon'
-                  />
-                  <div>
-                    <p className='text-black text-sm '>
-                      {JSON.parse(localStorage.getItem('user')).userName ||
-                        currentUser?.displayName}
-                    </p>
-                    <p
-                      key={index}
-                      className='bg-black/10 py-1 max-w-sm mb-7 px-3 text-md rounded-lg rounded-tl-none break-words'
-                    >
-                      {message.message}
-                    </p>
+                  <div className='flex items-center gap-3'>
+                    <img
+                      className='rounded-md w-7 self-start'
+                      src={
+                        JSON.parse(localStorage.getItem('user')).userAvatar ||
+                        currentUser?.photoURL
+                      }
+                      alt='user_icon'
+                    />
+                    <div>
+                      <p className='text-black text-sm '>
+                        {JSON.parse(localStorage.getItem('user')).userName ||
+                          currentUser?.displayName}
+                      </p>
+                      <p
+                        key={index}
+                        className='bg-black/10 py-1 max-w-sm mb-7 px-3 text-md rounded-lg rounded-tl-none break-words'
+                      >
+                        {message.message}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ) : (
+                ) : (
                   <div className='flex items-center gap-3 justify-end mr-5'>
-                  <div>
+                    <div>
                       <p className='text-black text-sm '>
                         {message.sender.name}
                       </p>
-                    <p
-                      key={index}
-                      className='bg-primary-400 text-white py-1 max-w-sm mb-4 px-3 text-md rounded-lg rounded-tr-none break-words'
-                    >
-                      {message.message}
-                    </p>
+                      <p
+                        key={index}
+                        className='bg-primary-400 text-white py-1 max-w-sm mb-4 px-3 text-md rounded-lg rounded-tr-none break-words'
+                      >
+                        {message.message}
+                      </p>
+                    </div>
+                    <img
+                      className='rounded-md w-7 self-start'
+                      src={message.userProfile}
+                      alt='user_icon'
+                    />
                   </div>
-                  <img
-                    className='rounded-md w-7 self-start'
-                    src={message.userProfile}
-                    alt='user_icon'
-                  />
-                </div>
-              )}
-            </div>
-          )
+                )}
+              </div>
+            )
           })
         )}
         <form className='p-5 flex gap-2 items-center absolute bottom-0 w-full'>
