@@ -84,6 +84,18 @@ export const getRooms = async (userRooms) => {
   }
 }
 
+export const getAllRooms = async () => {
+  try {
+    const allRooms = []
+    const querySnapshot = await getDocs(collection(db, 'rooms'))
+    querySnapshot.forEach((doc) => {
+      allRooms.push({ data: doc.data(), id: doc.id })
+    })
+    return allRooms
+  } catch (error) {
+    return console.error(error)
+  }
+}
 //Add Room to database
 export const addRoomDB = async (currentUser, room) => {
   try {
