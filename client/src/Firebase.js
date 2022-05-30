@@ -123,6 +123,17 @@ export const addRoomDB = async (currentUser, room) => {
       updateDoc(doc(db, 'users', currentUser.uid), {
         rooms: arrayUnion({ name: room, id: docRef.id }),
       })
+//Save Message
+export const saveMessage = async (roomId, message) => {
+  // const time = serverTimestamp()
+  try {
+    updateDoc(doc(db, 'rooms', roomId), {
+      messages: arrayUnion(message),
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
     })
 
     toast.success('Room Created 👍')
