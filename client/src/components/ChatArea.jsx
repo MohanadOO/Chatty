@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import { ChatContext } from '../Context/ChatContext'
 import { RoomContext } from '../Context/RoomContext'
+import { getMessages, saveMessage } from '../Firebase'
+import { StageSpinner } from 'react-spinners-kit'
 import RoomHeader from './RoomHeader'
 
 function ChatArea() {
@@ -8,6 +10,14 @@ function ChatArea() {
   const { room } = useContext(RoomContext)
   const [chat, setChat] = useState([])
   const [message, setMessage] = useState('')
+
+  useEffect(() => {
+    if (typeof room !== 'string') {
+      getMessages(room?.id).then((messages) => {
+        setChat(messages)
+      })
+    }
+  }, [room])
 
   const sendMessage = (e) => {
     e.preventDefault()
@@ -35,6 +45,12 @@ function ChatArea() {
       })
       setMessage('')
     }
+    // saveMessage(room.id, message)
+    saveMessage(room.id, {
+      message,
+      sender: { name: currentUser.displayName, id: currentUser.uid },
+      userProfile: currentUser.photoURL,
+    })
   }
 
   useEffect(() => {
@@ -46,11 +62,16 @@ function ChatArea() {
   return (
     <div className='rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-md'>
       <RoomHeader />
-      <div className='flex flex-col  justify-start overflow-y-auto'>
-        {chat.map((message, index) => {
+      <div className='flex flex-col  justify-start overflow-y-auto mb-20'>
+        {!chat ? (
+          <div className='absolute top-[50%] left-[50%] translate-x-[-50%]'>
+            <StageSpinner size={40} color={'#000'} />
+          </div>
+        ) : (
+          chat?.map((message, index) => {
           return (
-            <div className='ml-5'>
-              {message.sender === currentUser.uid ? (
+              <div className='ml-5' key={index}>
+                {message.sender.id === currentUser.uid ? (
                 <div className='flex items-center gap-3'>
                   <img
                     className='rounded-md w-7 self-start'
@@ -74,9 +95,11 @@ function ChatArea() {
                   </div>
                 </div>
               ) : (
-                <div className='flex items-center gap-3 justify-end'>
+                  <div className='flex items-center gap-3 justify-end mr-5'>
                   <div>
-                    <p className='text-black text-sm '>{message.userName}</p>
+                      <p className='text-black text-sm '>
+                        {message.sender.name}
+                      </p>
                     <p
                       key={index}
                       className='bg-primary-400 text-white py-1 max-w-sm mb-4 px-3 text-md rounded-lg rounded-tr-none break-words'
@@ -93,8 +116,9 @@ function ChatArea() {
               )}
             </div>
           )
-        })}
-        <form className='p-5 flex gap-2 items-center'>
+          })
+        )}
+        <form className='p-5 flex gap-2 items-center absolute bottom-0 w-full'>
           <input
             className='py-6 px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-primary-400 border-2'
             type='text'
