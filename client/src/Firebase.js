@@ -110,19 +110,34 @@ export const getAllUsers = async () => {
 }
 //Add Room to database
 export const addRoomDB = async (currentUser, room) => {
+  const roomAvatar = `https://avatars.dicebear.com/api/identicon/${nanoid(
+    10
+  )}.svg?radius=50`
   try {
-    await addDoc(collection(db, 'rooms'), {
+    const docRef = await addDoc(collection(db, 'rooms'), {
       name: room,
       users: [currentUser.uid],
       owners: [currentUser.uid],
       messages: [],
-      roomAvatar: `https://avatars.dicebear.com/api/identicon/${nanoid(
-        10
-      )}.svg?radius=50`,
-    }).then((docRef) => {
-      updateDoc(doc(db, 'users', currentUser.uid), {
+      roomAvatar: roomAvatar,
+    })
+
+    await updateDoc(doc(db, 'users', currentUser.uid), {
         rooms: arrayUnion({ name: room, id: docRef.id }),
       })
+
+    toast.success('Room Created 👍')
+    return {
+      name: room,
+      id: docRef.id,
+      owners: [currentUser.uid],
+      roomAvatar: roomAvatar,
+      users: [currentUser.uid],
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
 //Save Message
 export const saveMessage = async (roomId, message) => {
   // const time = serverTimestamp()
