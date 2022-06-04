@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { AddIcon } from '../Icons'
-import { RoomsAutoCompleteComboBox } from '../ComboBox/RoomsAutoCompleteComboBox'
+import { RoomsComboBox } from '../ComboBox/RoomsComboBox'
 
 export function JoinRoomModal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -20,7 +20,7 @@ export function JoinRoomModal() {
         <button
           type='button'
           onClick={openModal}
-          className=' flex items-center gap-3 rounded-md  px-8 py-2 text-sm font-medium  hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-black mb-3 hover:bg-primary-500 hover:text-white'
+          className='flex items-center gap-3 hover:rounded-lg px-3 w-full py-2 text-sm hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mb-3 hover:text-white hover:bg-primary-500 border-primary-500/20 border-b-2 dark:border-primary-white/50 transition-colors'
         >
           <AddIcon color={'black hover:white'} />
           Join Room
@@ -59,7 +59,7 @@ export function JoinRoomModal() {
                   >
                     Room Name
                   </Dialog.Title>
-                  <RoomsAutoCompleteComboBox />
+                  <RoomsComboBox />
                 </Dialog.Panel>
               </Transition.Child>
             </div>
