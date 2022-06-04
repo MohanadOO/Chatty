@@ -3,21 +3,26 @@ import UsersDetails from './UsersDetails'
 import { RoomContext } from '../Context/RoomContext'
 
 function RoomHeader() {
-  const { room } = useContext(RoomContext)
-
+  const { room, friend } = useContext(RoomContext)
   return (
     <>
-      <div className='flex items-center rounded-lg gap-2 py-2 px-8 bg-primary-400'>
-        <img
-          className='w-8 rounded-full bg-white'
-          src={room?.roomAvatar}
-          alt='room_icon'
-        />
-        <p className='px-2 text-white'>{room?.name}</p>
-        <div className='ml-auto'>
-          <UsersDetails />
+      {room || friend ? (
+        <div className='flex items-center rounded-md gap-2 py-4 px-8 text-black dark:text-white shadow-md shadow-primary-400/20 dark:shadow-primary-400/10 border-2 border-primary-500'>
+          <img
+            className='w-9 rounded-full bg-white'
+            src={room?.roomAvatar || friend.avatar}
+            alt='room_icon'
+          />
+          <p className='px-2 '>{room?.name || friend.name}</p>
+          <div className='ml-auto'>
+            {room && <UsersDetails users={room?.users} />}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className='flex items-center justify-center rounded-md gap-2 py-4 px-8 text-black dark:text-white shadow-md shadow-primary-400/20 dark:shadow-primary-400/10 border-2 border-primary-500'>
+          <p className=''>No room entered</p>
+        </div>
+      )}
     </>
   )
 }
