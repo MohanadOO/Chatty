@@ -96,14 +96,30 @@ export const getAllRooms = async () => {
     return console.error(error)
   }
 }
-export const getAllUsers = async () => {
+
+export const getAllUsers = async (currentUser, friends) => {
   try {
+    if (friends.length === 0) {
     const allUsers = []
     const querySnapshot = await getDocs(collection(db, 'users'))
     querySnapshot.forEach((doc) => {
-      allUsers.push(doc.data())
+        if (doc.id !== currentUser.uid)
+          allUsers.push({ data: doc.data(), id: doc.id })
+      })
+      return allUsers
+    } else {
+      const allUsers = []
+      const q = query(
+        collection(db, 'users'),
+        where('friends', 'not-in', friends)
+      )
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        if (doc.id !== currentUser.uid)
+          allUsers.push({ data: doc.data(), id: doc.id })
     })
     return allUsers
+    }
   } catch (error) {
     console.error(error)
   }
@@ -113,6 +129,22 @@ export const getMessages = async (roomId) => {
   try {
     const room = await getDoc(doc(db, 'rooms', roomId))
     return room.data().messages
+  } catch (error) {
+    console.error(error)
+  }
+}
+export const getUsersConversation = async (currentUser, friendID) => {
+  try {
+    const currentUserRef = await getDoc(doc(db, 'users', currentUser.uid))
+    const friendsRef = currentUserRef.data().friends
+
+    const messageDocRef = friendsRef.filter((friend) => {
+      if (friend.friendRef.id === friendID) return friend
+    })
+    const message = await getDoc(
+      doc(db, 'messages', messageDocRef[0].messageRef)
+    )
+    return { messages: message.data().messages, id: message.id }
   } catch (error) {
     console.error(error)
   }
