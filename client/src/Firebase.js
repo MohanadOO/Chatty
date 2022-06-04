@@ -147,6 +147,33 @@ export const addRoomDB = async (currentUser, room) => {
     console.error(error)
   }
 }
+//Add Friends to database
+export const addFriend = async (currentUser, friendID) => {
+  const currentUserRef = doc(db, 'users', currentUser.uid)
+  const friendRef = doc(db, 'users', friendID)
+
+  try {
+    addDoc(collection(db, 'messages'), {
+      messages: [],
+      users: [currentUser.uid, friendID],
+    }).then((docRef) => {
+      updateDoc(doc(db, 'users', currentUser.uid), {
+        friends: arrayUnion({ friendRef: friendRef, messageRef: docRef.id }),
+      })
+      updateDoc(doc(db, 'users', friendID), {
+        friends: arrayUnion({
+          friendRef: currentUserRef,
+          messageRef: docRef.id,
+        }),
+      })
+      toast.success('Add Friend ✅')
+    })
+    return getDoc(doc(db, 'users', friendID))
+  } catch (error) {
+    toast.error('Error ❌')
+    console.error(error)
+  }
+}
 //Save Message
 export const saveMessage = async (roomId, message) => {
   // const time = serverTimestamp()
