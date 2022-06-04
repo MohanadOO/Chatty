@@ -9,8 +9,10 @@ module.exports = {
         'primary-500': '#5447BD',
         'primary-white': '#EDEDED',
         'primary-text': '#eff7ca',
+        'primary-dark-400': '#161819',
+        'primary-dark-600': '#181A1B',
       },
     },
   },
-  plugins: [require('tailwind-scrollbar')],
+  plugins: [require('tailwind-scrollbar'), require('tailwindcss-textshadow')],
 }
