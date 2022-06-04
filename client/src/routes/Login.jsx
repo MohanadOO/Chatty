@@ -53,6 +53,7 @@ function Login() {
             name: currentUser.currentUser.displayName,
             profilePicture: currentUser.currentUser.photoURL,
             rooms: [],
+            friends: [],
           })
           console.log('Create Document')
         }
@@ -97,6 +98,7 @@ function Login() {
               name: currentUser.currentUser.displayName,
               profilePicture: currentUser.currentUser.photoURL,
               rooms: [],
+              friends: [],
             })
             console.log('Create Document')
           }
@@ -151,7 +153,7 @@ function Login() {
         <h1 className='text-center mb-5 underline-offset-2'>Log In</h1>
         <div
           onClick={handleGoogleSignIn}
-          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
+          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
         >
           <GoogleIcon width={20} height={20} />
           <button>Sign in with Google</button>

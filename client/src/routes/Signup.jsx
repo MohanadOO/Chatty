@@ -70,6 +70,7 @@ function Signup() {
           name: currentUser.currentUser.displayName,
           profilePicture: currentUser.currentUser.photoURL,
           rooms: [],
+          friends: [],
         })
       }
       getData().catch((error) => {
@@ -108,6 +109,7 @@ function Signup() {
               name: currentUser.currentUser.displayName,
               profilePicture: currentUser.currentUser.photoURL,
               rooms: [],
+              friends: [],
             })
           }
         }
@@ -177,7 +179,7 @@ function Signup() {
         <h1 className='text-center mb-5'>Sign Up</h1>
         <div
           onClick={handleGoogleSignUp}
-          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow'
+          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow'
         >
           <GoogleIcon width={20} height={20} />
           <button>Sign Up with Google</button>
