@@ -158,6 +158,15 @@ export const saveMessage = async (roomId, message) => {
     console.error(error)
   }
 }
+export const saveUserMessage = async (messageDocId, message) => {
+  try {
+    updateDoc(doc(db, 'messages', messageDocId), {
+      messages: arrayUnion(message),
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
 export const JoinRoom = async (roomName, roomId, userId) => {
   try {
     await updateDoc(doc(db, 'rooms', roomId), {
