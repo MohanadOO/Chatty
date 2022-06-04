@@ -25,9 +25,11 @@ function App() {
 
   return (
     <UserContext.Provider value={{ userLoggedIn, setUserLoggedIn }}>
-      <Toaster />
-      <Nav defaultTheme={localStorage.theme} />
-      <Outlet />
+      <div className='dark:bg-primary-dark-600 dark:text-white text-black transition-colors h-screen'>
+        <Toaster />
+        <Nav defaultTheme={localStorage.theme} />
+        <Outlet />
+      </div>
     </UserContext.Provider>
   )
 }
