@@ -16,6 +16,11 @@ import {
   getDoc,
   doc,
   getDocs,
+  serverTimestamp,
+  Timestamp,
+  query,
+  where,
+  setDoc,
 } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { nanoid } from 'nanoid'
@@ -54,10 +59,10 @@ export function useAuth() {
 export const getUserRooms = async (currentUser) => {
   try {
     const userDocument = await getDoc(doc(db, 'users', currentUser.uid))
-    const roomsArr = userDocument.data()
+    const roomsArr = userDocument.data().rooms
 
     if (roomsArr === undefined) {
-      return undefined
+      return []
     } else {
       return roomsArr
     }
@@ -66,13 +71,13 @@ export const getUserRooms = async (currentUser) => {
   }
 }
 
-//Get Rooms details
-export const getRooms = async (userRooms) => {
+//Get Rooms details from room collection that matched the user rooms list.
+export const getMatchedRooms = async (userRooms) => {
   try {
     const querySnapshot = await getDocs(collection(db, 'rooms'))
     const matchedRoom = []
     querySnapshot.forEach((doc) => {
-      userRooms.rooms.forEach((room) => {
+      userRooms.forEach((room) => {
         if (room.id === doc.id) {
           matchedRoom.push({ ...doc.data(), id: doc.id })
         }
@@ -100,9 +105,9 @@ export const getAllRooms = async () => {
 export const getAllUsers = async (currentUser, friends) => {
   try {
     if (friends.length === 0) {
-    const allUsers = []
-    const querySnapshot = await getDocs(collection(db, 'users'))
-    querySnapshot.forEach((doc) => {
+      const allUsers = []
+      const querySnapshot = await getDocs(collection(db, 'users'))
+      querySnapshot.forEach((doc) => {
         if (doc.id !== currentUser.uid)
           allUsers.push({ data: doc.data(), id: doc.id })
       })
@@ -117,15 +122,24 @@ export const getAllUsers = async (currentUser, friends) => {
       querySnapshot.forEach((doc) => {
         if (doc.id !== currentUser.uid)
           allUsers.push({ data: doc.data(), id: doc.id })
-    })
-    return allUsers
+      })
+      return allUsers
     }
   } catch (error) {
     console.error(error)
   }
 }
-//Get Messages
-export const getMessages = async (roomId) => {
+
+export const getFriends = async (currentUser) => {
+  try {
+    const friends = await getDoc(doc(db, 'users', currentUser.uid))
+    return friends.data().friends
+  } catch (error) {
+    console.error(error)
+  }
+}
+//Get room Messages
+export const getRoomMessages = async (roomId) => {
   try {
     const room = await getDoc(doc(db, 'rooms', roomId))
     return room.data().messages
@@ -164,8 +178,8 @@ export const addRoomDB = async (currentUser, room) => {
     })
 
     await updateDoc(doc(db, 'users', currentUser.uid), {
-        rooms: arrayUnion({ name: room, id: docRef.id }),
-      })
+      rooms: arrayUnion({ name: room, id: docRef.id }),
+    })
 
     toast.success('Room Created 👍')
     return {
@@ -179,6 +193,7 @@ export const addRoomDB = async (currentUser, room) => {
     console.error(error)
   }
 }
+
 //Add Friends to database
 export const addFriend = async (currentUser, friendID) => {
   const currentUserRef = doc(db, 'users', currentUser.uid)
@@ -206,6 +221,7 @@ export const addFriend = async (currentUser, friendID) => {
     console.error(error)
   }
 }
+
 //Save Message
 export const saveMessage = async (roomId, message) => {
   // const time = serverTimestamp()
@@ -217,6 +233,7 @@ export const saveMessage = async (roomId, message) => {
     console.error(error)
   }
 }
+
 export const saveUserMessage = async (messageDocId, message) => {
   try {
     updateDoc(doc(db, 'messages', messageDocId), {
@@ -226,6 +243,7 @@ export const saveUserMessage = async (messageDocId, message) => {
     console.error(error)
   }
 }
+
 export const JoinRoom = async (roomName, roomId, userId) => {
   try {
     await updateDoc(doc(db, 'rooms', roomId), {
