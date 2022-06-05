@@ -3,14 +3,9 @@ import { UserContext } from '../Context/UserContext'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FillEye, FillEyeInvisible, GoogleIcon } from '../components/Icons'
-import { signInWithGoogle } from '../Firebase'
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-import { auth, db } from '../Firebase'
-import { getDoc, doc, setDoc } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 
 function Login() {
-  const currentUser = getAuth()
   const [showPassword, setShowPassword] = useState(false)
   const { setUserLoggedIn } = useContext(UserContext)
   const navigate = useNavigate()
@@ -39,6 +34,13 @@ function Login() {
   }, [isSubmitted])
 
   async function onSubmit(data) {
+    const { getAuth, signInWithEmailAndPassword } = await import(
+      'firebase/auth'
+    )
+    const currentUser = getAuth()
+    const { auth, db } = await import('../Firebase')
+    const { getDoc, doc, setDoc } = await import('firebase/firestore')
+
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password)
 
@@ -79,7 +81,12 @@ function Login() {
     }
   }
 
-  function handleGoogleSignIn() {
+  async function handleGoogleSignIn() {
+    const { getAuth } = await import('firebase/auth')
+    const currentUser = getAuth()
+    const { db, signInWithGoogle } = await import('../Firebase')
+    const { getDoc, doc, setDoc } = await import('firebase/firestore')
+
     toast
       .promise(signInWithGoogle(), {
         loading: <b>Log In With Google..</b>,

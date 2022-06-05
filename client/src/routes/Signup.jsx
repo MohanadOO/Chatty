@@ -3,18 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FillEye, FillEyeInvisible, GoogleIcon } from '../components/Icons'
-import { signInWithGoogle } from '../Firebase'
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  updateProfile,
-} from 'firebase/auth'
-import { auth, db } from '../Firebase'
 import { UserContext } from '../Context/UserContext'
-import { getDoc, doc, setDoc } from 'firebase/firestore'
 
 function Signup() {
-  const currentUser = getAuth()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const { setUserLoggedIn } = useContext(UserContext)
@@ -52,6 +43,13 @@ function Signup() {
   }
 
   async function registerUser(data) {
+    const { auth, db } = await import('../Firebase')
+    const { getAuth, createUserWithEmailAndPassword, updateProfile } =
+      await import('firebase/auth')
+    const { doc, setDoc } = await import('firebase/firestore')
+
+    const currentUser = getAuth()
+
     try {
       const user = await createUserWithEmailAndPassword(
         auth,
@@ -92,7 +90,13 @@ function Signup() {
     }
   }
 
-  function handleGoogleSignUp() {
+  async function handleGoogleSignUp() {
+    const { signInWithGoogle, db } = await import('../Firebase')
+    const { getAuth } = await import('firebase/auth')
+    const { getDoc, doc, setDoc } = await import('firebase/firestore')
+
+    const currentUser = getAuth()
+
     toast
       .promise(signInWithGoogle(), {
         loading: <b>Signing With Google..</b>,

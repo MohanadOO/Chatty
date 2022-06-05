@@ -2,11 +2,9 @@ import { useState, useContext, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext'
 import { useAuth } from '../Firebase'
-import { getDoc } from 'firebase/firestore'
 import io from 'socket.io-client'
 import ChatContainer from '../components/ChatContainer'
 import { ChatContext } from '../Context/ChatContext'
-import { getUserRooms, getFriends } from '../Firebase'
 import { StageSpinner } from 'react-spinners-kit'
 
 const socket = io.connect('http://localhost:3001')
@@ -20,40 +18,45 @@ function Chat() {
   const { userLoggedIn } = useContext(UserContext)
 
   useEffect(() => {
-    if (currentUser?.displayName) {
-      //Get User Rooms from Database {name, id}
-      getUserRooms(currentUser)
-        .then((roomsArr) => {
-          if (roomsArr) {
-            setUserRooms(roomsArr)
-            setLoading(false)
+    const getData = async () => {
+      const { getUserRooms, getFriends } = await import('../Firebase')
+
+      if (currentUser?.displayName) {
+        //Get User Rooms from Database {name, id}
+        getUserRooms(currentUser)
+          .then((roomsArr) => {
+            if (roomsArr) {
+              setUserRooms(roomsArr)
+              setLoading(false)
+            } else {
+              setUserRooms(undefined)
+              setLoading(false)
+            }
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+
+        //Get User Friends from database.
+        getFriends(currentUser).then((i) => {
+          if (i) {
+            const friendDetailsPromiseArr = i.map(async (friend) => {
+              const { getDoc } = await import('firebase/firestore')
+              return await getDoc(friend.friendRef).then((info) => {
+                return { data: info.data(), id: info.id }
+              })
+            })
+            Promise.all(friendDetailsPromiseArr).then((item) => {
+              setUserFriends(item)
+            })
           } else {
-            setUserRooms(undefined)
-            setLoading(false)
+            setUserFriends([])
           }
         })
-        .catch((error) => {
-          console.error(error)
-        })
-
-      //Get User Friends from database.
-      getFriends(currentUser).then((i) => {
-        if (i) {
-          const friendDetailsPromiseArr = i.map(async (friend) => {
-            return await getDoc(friend.friendRef).then((info) => {
-              return { data: info.data(), id: info.id }
-            })
-          })
-          Promise.all(friendDetailsPromiseArr).then((item) => {
-            setUserFriends(item)
-          })
-        } else {
-          setUserFriends([])
-        }
-      })
+      }
     }
+    getData()
   }, [currentUser])
-
 
   return (
     <ChatContext.Provider

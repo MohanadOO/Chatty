@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import { UserContext } from '../Context/UserContext'
-import { signOut } from 'firebase/auth'
 import { auth, useAuth } from '../Firebase'
 import { RotateSpinner } from 'react-spinners-kit'
 import { MoonIcon, SunIcon } from '../components/Icons'
@@ -11,6 +10,7 @@ function Nav({ defaultTheme }) {
   const { userLoggedIn, setUserLoggedIn } = useContext(UserContext)
   const [theme, setTheme] = useState(defaultTheme)
   const logout = async () => {
+    const { signOut } = await import('firebase/auth')
     await signOut(auth)
     localStorage.setItem('loggedIn', false)
     setUserLoggedIn(false)

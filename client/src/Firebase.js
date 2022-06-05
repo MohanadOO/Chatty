@@ -6,22 +6,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from 'firebase/auth'
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
-  getDoc,
-  doc,
-  getDocs,
-  serverTimestamp,
-  Timestamp,
-  query,
-  where,
-  setDoc,
-} from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { nanoid } from 'nanoid'
 import toast from 'react-hot-toast'
@@ -57,6 +42,7 @@ export function useAuth() {
 
 //Get User Rooms if Exist.
 export const getUserRooms = async (currentUser) => {
+  const { getDoc, doc } = await import('firebase/firestore')
   try {
     const userDocument = await getDoc(doc(db, 'users', currentUser.uid))
     const roomsArr = userDocument.data().rooms
@@ -73,6 +59,7 @@ export const getUserRooms = async (currentUser) => {
 
 //Get Rooms details from room collection that matched the user rooms list.
 export const getMatchedRooms = async (userRooms) => {
+  const { getDocs, collection } = await import('firebase/firestore')
   try {
     const querySnapshot = await getDocs(collection(db, 'rooms'))
     const matchedRoom = []
@@ -90,6 +77,7 @@ export const getMatchedRooms = async (userRooms) => {
 }
 
 export const getAllRooms = async () => {
+  const { getDocs, collection } = await import('firebase/firestore')
   try {
     const allRooms = []
     const querySnapshot = await getDocs(collection(db, 'rooms'))
@@ -103,6 +91,9 @@ export const getAllRooms = async () => {
 }
 
 export const getAllUsers = async (currentUser, friends) => {
+  const { getDocs, query, collection, where } = await import(
+    'firebase/firestore'
+  )
   try {
     if (friends.length === 0) {
       const allUsers = []
@@ -131,6 +122,7 @@ export const getAllUsers = async (currentUser, friends) => {
 }
 
 export const getFriends = async (currentUser) => {
+  const { getDoc, doc } = await import('firebase/firestore')
   try {
     const friends = await getDoc(doc(db, 'users', currentUser.uid))
     return friends.data().friends
@@ -140,6 +132,7 @@ export const getFriends = async (currentUser) => {
 }
 //Get room Messages
 export const getRoomMessages = async (roomId) => {
+  const { getDoc, doc } = await import('firebase/firestore')
   try {
     const room = await getDoc(doc(db, 'rooms', roomId))
     return room.data().messages
@@ -148,6 +141,7 @@ export const getRoomMessages = async (roomId) => {
   }
 }
 export const getUsersConversation = async (currentUser, friendID) => {
+  const { getDoc, doc } = await import('firebase/firestore')
   try {
     const currentUserRef = await getDoc(doc(db, 'users', currentUser.uid))
     const friendsRef = currentUserRef.data().friends
@@ -165,6 +159,9 @@ export const getUsersConversation = async (currentUser, friendID) => {
 }
 //Add Room to database
 export const addRoomDB = async (currentUser, room) => {
+  const { doc, addDoc, collection, updateDoc, arrayUnion } = await import(
+    'firebase/firestore'
+  )
   const roomAvatar = `https://avatars.dicebear.com/api/identicon/${nanoid(
     10
   )}.svg?radius=50`
@@ -196,6 +193,8 @@ export const addRoomDB = async (currentUser, room) => {
 
 //Add Friends to database
 export const addFriend = async (currentUser, friendID) => {
+  const { doc, addDoc, getDoc, collection, updateDoc, arrayUnion } =
+    await import('firebase/firestore')
   const currentUserRef = doc(db, 'users', currentUser.uid)
   const friendRef = doc(db, 'users', friendID)
 
@@ -224,6 +223,7 @@ export const addFriend = async (currentUser, friendID) => {
 
 //Save Message
 export const saveMessage = async (roomId, message) => {
+  const { doc, updateDoc, arrayUnion } = await import('firebase/firestore')
   // const time = serverTimestamp()
   try {
     updateDoc(doc(db, 'rooms', roomId), {
@@ -235,6 +235,7 @@ export const saveMessage = async (roomId, message) => {
 }
 
 export const saveUserMessage = async (messageDocId, message) => {
+  const { doc, updateDoc, arrayUnion } = await import('firebase/firestore')
   try {
     updateDoc(doc(db, 'messages', messageDocId), {
       messages: arrayUnion(message),
@@ -245,6 +246,9 @@ export const saveUserMessage = async (messageDocId, message) => {
 }
 
 export const JoinRoom = async (roomName, roomId, userId) => {
+  const { doc, getDoc, updateDoc, arrayUnion } = await import(
+    'firebase/firestore'
+  )
   try {
     await updateDoc(doc(db, 'rooms', roomId), {
       users: arrayUnion(userId),
