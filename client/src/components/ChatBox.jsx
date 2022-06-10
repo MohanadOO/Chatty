@@ -34,7 +34,6 @@ export function ChatBox() {
     }
   }, [friend, room])
 
-
   useEffect(() => {
     if (chat) {
       if (chat[chat.length - 1]?.sender?.id === currentUser.uid) {
@@ -100,7 +99,7 @@ export function ChatBox() {
   }, [socket])
 
   return (
-    <div className='rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-lg dark:shadow-primary-500'>
+    <div className='h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-lg dark:shadow-primary-500'>
       <RoomHeader />
       <div
         id='chat-box'
@@ -124,7 +123,7 @@ export function ChatBox() {
                     <div className='flex items-center'>
                       {message.showAvatar && (
                         <img
-                          className='rounded-md w-7 self-start'
+                          className='rounded-md w-6 md:w-7 self-start'
                           src={
                             JSON.parse(localStorage.getItem('user'))
                               .userAvatar || currentUser?.photoURL
@@ -134,10 +133,10 @@ export function ChatBox() {
                       )}
                       {message.showAvatar ? (
                         <div className='ml-3'>
-                          <p className='text-sm mb-2'>You</p>
+                          <p className='text-xs md:text-sm mb-2'>You</p>
                           <p
                             key={index}
-                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-sm'
+                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30 text-xs md:text-sm font-medium'
                           >
                             {message.message}
                           </p>
@@ -146,7 +145,7 @@ export function ChatBox() {
                         <div className='ml-10'>
                           <p
                             key={index}
-                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-sm'
+                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
                           >
                             {message.message}
                           </p>
@@ -158,18 +157,18 @@ export function ChatBox() {
                       {message.showAvatar ? (
                         <div className='flex items-center gap-3 justify-end mr-5'>
                           <div>
-                            <p className='text-sm text-right mb-2'>
+                            <p className='text-xs md:text-sm text-right mb-2'>
                               {message.sender.name}
                             </p>
                             <p
                               key={index}
-                              className='bg-primary-400 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-sm'
+                              className='bg-primary-400 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
                             >
                               {message.message}
                             </p>
                           </div>
                           <img
-                            className='rounded-md w-7 self-start'
+                            className='rounded-md w-6 md:w-7 self-start'
                             src={message.userProfile}
                             alt='user_icon'
                           />
@@ -179,7 +178,7 @@ export function ChatBox() {
                           <div>
                             <p
                               key={index}
-                              className='bg-primary-400 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-sm'
+                              className='bg-primary-400 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
                             >
                               {message.message}
                             </p>
@@ -194,16 +193,16 @@ export function ChatBox() {
           )}
         </>
 
-        <form className='p-5 flex gap-2 items-center absolute bottom-0 w-full'>
+        <form className='p-3  flex gap-2 items-center absolute bottom-0 w-full'>
           <input
-            className='py-6 px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-primary-400 border-2'
+            className='py-4 px-5 md:py-5 md:px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-primary-400/50 border-2'
             type='text'
             placeholder='Write a Message...'
             onChange={(e) => setMessage(e.target.value)}
             value={message}
           />
           <button
-            className='bg-primary-500 text-white w-40 py-3 px-2 rounded-md '
+            className='bg-primary-400 text-white text-xs w-40 md:text-sm md:w-40 py-3 px-2 rounded-md'
             onClick={sendMessage}
           >
             Send Message

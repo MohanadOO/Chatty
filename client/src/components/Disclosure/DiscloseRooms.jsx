@@ -9,7 +9,8 @@ import { JoinRoomModal } from '../Modals/JoinRoomModal'
 export function DiscloseRooms() {
   const [loading, setLoading] = useState(false)
   const { userRooms, socket } = useContext(ChatContext)
-  const { setRoom, setFriend, matchedRooms } = useContext(RoomContext)
+  const { setRoom, setFriend, matchedRooms, setSwitchTab } =
+    useContext(RoomContext)
 
   useEffect(() => {
     setLoading(true)
@@ -29,12 +30,14 @@ export function DiscloseRooms() {
     if (name !== '') {
       socket.emit('join_room', id)
     }
+
+    setSwitchTab(1)
   }
 
   return (
     <div className='pt-5'>
       <div className=' rounded-2xl bg-white dark:bg-primary-dark-400'>
-        <Disclosure>
+        <Disclosure defaultOpen>
           {({ open }) => (
             <>
               <Disclosure.Button className='flex w-full gap-3 items-center rounded-lg border-2 px-3 py-2 text-sm  hover:border-primary-500 transition-colors duration-300'>

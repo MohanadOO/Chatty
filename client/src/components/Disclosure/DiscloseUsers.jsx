@@ -1,5 +1,4 @@
 import { Disclosure } from '@headlessui/react'
-import { isCompositeType } from 'graphql'
 import { useContext, useEffect, useState } from 'react'
 import { StageSpinner } from 'react-spinners-kit'
 import { ChatContext } from '../../Context/ChatContext'
@@ -9,7 +8,7 @@ import { AddFriendsModal } from '../Modals/AddFriendsModal'
 
 export function DiscloseUsers() {
   const { userFriends, socket } = useContext(ChatContext)
-  const { setFriend, setRoom } = useContext(RoomContext)
+  const { setFriend, setRoom, setSwitchTab } = useContext(RoomContext)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -29,12 +28,14 @@ export function DiscloseUsers() {
     if (name !== '') {
       socket.emit('join_room', 'one-one')
     }
+
+    setSwitchTab(1)
   }
 
   return (
     <div className='pt-5'>
       <div className=' rounded-2xl'>
-        <Disclosure>
+        <Disclosure defaultOpen>
           {({ open }) => (
             <>
               <Disclosure.Button className='flex w-full gap-3 items-center rounded-lg border-2 px-3 py-2 text-sm  hover:border-primary-500 transition-colors duration-300'>

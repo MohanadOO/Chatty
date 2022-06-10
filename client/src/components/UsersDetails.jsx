@@ -23,7 +23,7 @@ function UsersDetails({ users }) {
     return (
       <div className='flex items-center justify-center cursor-pointer'>
         <img
-          className='w-9 rounded-lg'
+          className='w-6 md:w-9 rounded-lg'
           src={user.profilePicture}
           alt='user_avatar'
         />
