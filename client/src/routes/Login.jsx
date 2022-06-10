@@ -3,11 +3,11 @@ import { UserContext } from '../Context/UserContext'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FillEye, FillEyeInvisible, GoogleIcon } from '../components/Icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false)
-  const { setUserLoggedIn } = useContext(UserContext)
+  const { setUserLoggedIn, userLoggedIn } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleShowPassword = () => {
@@ -154,6 +154,7 @@ function Login() {
 
   return (
     <div className='flex justify-center items-center'>
+      {userLoggedIn && <Navigate to='/chat' replace />}
       {errors.password ? handleError('Password') : null}
       {errors.username ? handleError('Username') : null}
       <div className=' border-2 border-primary-500   max-w-[550px] w-full py-10 px-32 rounded-md shadow-lg flex flex-col items-center absolute top-[50%] -translate-y-[50%]'>

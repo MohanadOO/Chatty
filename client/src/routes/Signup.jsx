@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FillEye, FillEyeInvisible, GoogleIcon } from '../components/Icons'
@@ -8,7 +8,7 @@ import { UserContext } from '../Context/UserContext'
 function Signup() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const { setUserLoggedIn } = useContext(UserContext)
+  const { setUserLoggedIn, userLoggedIn } = useContext(UserContext)
   const navigate = useNavigate()
 
   const {
@@ -177,6 +177,7 @@ function Signup() {
 
   return (
     <div className='flex justify-center items-center'>
+      {userLoggedIn && <Navigate to='/chat' replace />}
       {errors.password ? handleError('Password') : null}
       {errors.username ? handleError('Username') : null}
       <div className='border-2 border-primary-500/90  py-16 px-2 max-w-[750px]  absolute top-[50%] -translate-y-[50%] w-full rounded-md shadow-lg flex flex-col  '>
