@@ -6,7 +6,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { arrayRemove, getFirestore, serverTimestamp } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { nanoid } from 'nanoid'
 import toast from 'react-hot-toast'
@@ -76,7 +76,7 @@ export const getMatchedRooms = async (userRooms) => {
   }
 }
 
-export const getAllRooms = async () => {
+export const getAllRooms = async (currentUser) => {
   const { getDocs, collection } = await import('firebase/firestore')
   try {
     const allRooms = []
@@ -84,7 +84,14 @@ export const getAllRooms = async () => {
     querySnapshot.forEach((doc) => {
       allRooms.push({ data: doc.data(), id: doc.id })
     })
-    return allRooms
+
+    const filterRooms = allRooms.filter((room) => {
+      return room.data.users.every((matchUser) => {
+        return matchUser !== currentUser.uid
+      })
+    })
+
+    return filterRooms
   } catch (error) {
     return console.error(error)
   }
@@ -105,16 +112,20 @@ export const getAllUsers = async (currentUser, friends) => {
       return allUsers
     } else {
       const allUsers = []
-      const q = query(
-        collection(db, 'users'),
-        where('friends', 'not-in', friends)
-      )
+      const q = query(collection(db, 'users'))
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
-        if (doc.id !== currentUser.uid)
+        if (doc.id !== currentUser.uid) {
           allUsers.push({ data: doc.data(), id: doc.id })
+        }
       })
-      return allUsers
+
+      const filterFriends = allUsers.filter((user) => {
+        return friends.every((friend) => {
+          return friend.id !== user.id
+        })
+      })
+      return filterFriends
     }
   } catch (error) {
     console.error(error)
@@ -227,7 +238,7 @@ export const saveMessage = async (roomId, message) => {
   // const time = serverTimestamp()
   try {
     updateDoc(doc(db, 'rooms', roomId), {
-      messages: arrayUnion(message),
+      messages: arrayUnion({ ...message, createdAt: serverTimestamp() }),
     })
   } catch (error) {
     console.error(error)

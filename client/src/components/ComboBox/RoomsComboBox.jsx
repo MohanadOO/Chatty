@@ -5,7 +5,7 @@ import { getAllRooms, JoinRoom } from '../../Firebase'
 import { RoomContext } from '../../Context/RoomContext'
 import { ChatContext } from '../../Context/ChatContext'
 
-export function RoomsComboBox() {
+export function RoomsComboBox({ closeModal }) {
   const { setMatchedRooms, setRoom } = useContext(RoomContext)
   const { currentUser } = useContext(ChatContext)
   const [rooms, setRooms] = useState([])
@@ -14,17 +14,9 @@ export function RoomsComboBox() {
 
   useEffect(() => {
     //Get All the rooms from the rooms collection
-    getAllRooms().then((rooms) => {
+    getAllRooms(currentUser).then((rooms) => {
       //Show only the rooms that the user is not joined to
-      const newRooms = []
-      rooms.forEach((room) => {
-        room.data.users.forEach((user) => {
-          if (user !== currentUser.uid) {
-            newRooms.push(room)
-          }
-        })
-      })
-      setRooms(newRooms)
+      setRooms(rooms)
     })
   }, [])
 
@@ -40,6 +32,7 @@ export function RoomsComboBox() {
       }
       return [{ id: selected.id, ...selected.data }]
     })
+    closeModal()
   }
 
   const filteredRooms =
