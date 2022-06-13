@@ -1,17 +1,20 @@
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
+import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
 import { addFriend, getAllUsers } from '../../Firebase'
 import { ChatContext } from '../../Context/ChatContext'
 import toast from 'react-hot-toast'
 
-export function UsersComboBox({ friends }) {
+export function UsersComboBox({ friends, closeModal }) {
   const { currentUser, setUserFriends } = useContext(ChatContext)
   const [Users, setUsers] = useState([])
   const [selected, setSelected] = useState([])
   const [query, setQuery] = useState('')
 
   useEffect(() => {
-    getAllUsers(currentUser, friends).then((allUsers) => setUsers(allUsers))
+    getAllUsers(currentUser, friends).then((allUsers) => {
+      setUsers(allUsers)
+    })
   }, [])
 
   function handleAddFriends() {
@@ -25,6 +28,7 @@ export function UsersComboBox({ friends }) {
     } else {
       toast.error("Can't Add ❌")
     }
+    closeModal()
   }
 
   const filteredUsers =
