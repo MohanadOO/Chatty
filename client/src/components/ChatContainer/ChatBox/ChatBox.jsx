@@ -147,6 +147,12 @@ export function ChatBox() {
     setUserTyping('')
   }
 
+  function handleImageError(e, name) {
+    console.log(e, name)
+    e.target.src = `https://ui-avatars.com/api/?name=${
+      name.split(' ')[0]
+    }&length=1`
+  }
   return (
     <div className='h-[75vh] md:h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-md dark:shadow-purple-700'>
       <RoomHeader
@@ -184,6 +190,9 @@ export function ChatBox() {
                           src={
                             JSON.parse(localStorage.getItem('user'))
                               .userAvatar || currentUser?.photoURL
+                          }
+                          onError={(e) =>
+                            handleImageError(e, message?.sender?.name)
                           }
                           alt='user_icon'
                         />
@@ -227,6 +236,9 @@ export function ChatBox() {
                           <img
                             className='rounded-md w-6 md:w-7 self-start'
                             src={message.userProfile}
+                            onError={(e) =>
+                              handleImageError(e, message?.sender?.name)
+                            }
                             alt='user_icon'
                           />
                         </div>

@@ -57,12 +57,19 @@ function UsersDetails({ users }) {
     setLoading(false)
   }, [users])
 
+  function handleImageError(e, name) {
+    e.target.src = `https://ui-avatars.com/api/?name=${
+      name.split(' ')[0]
+    }&length=1`
+  }
+
   const usersList = usersInfo?.map((user) => {
     return (
       <div className='relative cursor-pointer'>
         <img
           className='w-6 border-2 border-white dark:border-gray-800 md:w-9 rounded-lg'
           src={user?.profilePicture}
+          onError={(e) => handleImageError(e, user.name)}
           alt='user_avatar'
           title='Online'
         />

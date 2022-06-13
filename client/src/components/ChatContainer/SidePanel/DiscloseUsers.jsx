@@ -36,6 +36,12 @@ export function DiscloseUsers() {
 
   // console.log(connectedUsersStatue, userFriends)
 
+  function handleImageError(e, name) {
+    e.target.src = `https://ui-avatars.com/api/?name=${
+      name.split(' ')[0]
+    }&length=1`
+  }
+
   return (
     <div className='pt-5'>
       <div className=' rounded-2xl'>
@@ -71,14 +77,17 @@ export function DiscloseUsers() {
                             >
                               <div className='relative flex items-center justify-center'>
                                 <img
-                                  className='w-8  rounded-full fill-black'
+                                  className='w-10 rounded-full fill-black'
                                   key={`${friend.data.name}_avatar`}
                                   src={`${friend.data.profilePicture}`}
+                                  onError={(e) =>
+                                    handleImageError(e, friend.data.name)
+                                  }
                                   alt='friend_avatar'
                                 />
                                 <span className='top-0 left-[19px] absolute w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full'></span>
                               </div>
-                              <p className='p-2' key={friend.data.name}>
+                              <p className='p-2 w-full' key={friend.data.name}>
                                 {friend.data.name}
                               </p>
                             </div>

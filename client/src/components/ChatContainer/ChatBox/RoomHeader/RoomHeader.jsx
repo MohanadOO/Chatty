@@ -1,6 +1,13 @@
 import UsersDetails from './UsersDetails'
 
 function RoomHeader({ userTyping, room, friend, friendStatue }) {
+  function handleImageError(e, name) {
+    console.log(e, name)
+    e.target.src = `https://ui-avatars.com/api/?name=${
+      name.split(' ')[0]
+    }&length=1`
+  }
+  
   return (
     <>
       {room || friend ? (
@@ -9,6 +16,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
             <img
               className='w-8 md:w-9 rounded-full bg-white'
               src={room?.roomAvatar || friend?.avatar}
+              onError={(e) => handleImageError(e, friend.name || room.name)}
               alt={room?.roomAvatar ? 'room_avatar' : 'friend_avatar'}
             />
             <span
