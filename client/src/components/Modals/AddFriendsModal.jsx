@@ -19,7 +19,7 @@ export function AddFriendsModal({ friends }) {
         <button
           type='button'
           onClick={openModal}
-          className='flex items-center gap-3 hover:rounded-lg px-3 w-full py-2 text-sm hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mb-3 hover:text-white hover:bg-primary-500 border-primary-500/20 border-b-2 dark:border-primary-white/50 transition-colors'
+          className='flex items-center gap-3 hover:rounded-lg px-3 w-full py-2 text-sm hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mb-3 hover:text-white hover:bg-purple-700 border-purple-700/20 border-b-2 dark:border-white/50 transition-colors'
         >
           <AddIcon />
           Add Friends

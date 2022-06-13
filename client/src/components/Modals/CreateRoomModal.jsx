@@ -1,12 +1,11 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useContext } from 'react'
 import { addRoomDB } from '../../Firebase'
 import { AddIcon } from '../Icons'
 import { ChatContext } from '../../Context/ChatContext'
 import { RoomContext } from '../../Context/RoomContext'
 import toast from 'react-hot-toast'
-import Modal from './Modal'
+import Modal from '../Modals/Modal'
 
 export function CreateRoomModal() {
   const { currentUser } = useContext(ChatContext)
@@ -48,7 +47,7 @@ export function CreateRoomModal() {
         <button
           type='button'
           onClick={openModal}
-          className=' flex items-center gap-3 rounded-md bg-primary-500  px-8 py-2 text-sm font-medium  hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-white'
+          className=' flex items-center gap-3 rounded-md bg-purple-700  px-8 py-2 text-sm font-medium  hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 text-white'
         >
           <AddIcon color={'white'} />
           Create Room

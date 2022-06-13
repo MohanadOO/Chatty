@@ -28,7 +28,7 @@ function Modal({
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center'>
+          <div className='flex min-h-full items-center justify-center p-4'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'
@@ -38,32 +38,32 @@ function Modal({
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white p-6 text-left h-64 align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white py-14 px-10 text-left align-middle shadow-xl transition-all'>
                 <Dialog.Title
                   as='h3'
-                  className='text-lg text-center font-medium leading-6 text-gray-900'
+                  className='text-xl font-semibold leading-6 text-gray-700'
                 >
                   {title}
                 </Dialog.Title>
-                {friends && <UsersComboBox friends={friends} />}
+                {friends && (
+                  <UsersComboBox friends={friends} closeModal={closeModal} />
+                )}
                 {rooms && (
                   <form onSubmit={(e) => createRoom(e)}>
-                    <div className='mt-2 text-center'>
-                      <p className='text-sm text-gray-500 p-2'>
-                        <input
-                          className='py-1 px-4'
-                          type='text'
-                          placeholder='Room name...'
-                          value={roomName}
-                          onChange={(e) => setRoomName(e.target.value)}
-                        />
-                      </p>
+                    <div className='mt-5'>
+                      <input
+                        className='py-2 px-5 text-sm ring-1 rounded-md ring-purple-500 focus:ring-2 focus:outline-none'
+                        type='text'
+                        placeholder='Room name...'
+                        value={roomName}
+                        onChange={(e) => setRoomName(e.target.value)}
+                      />
                     </div>
 
-                    <div className='mt-3 text-center'>
+                    <div className='mt-5'>
                       <input
                         onClick={(e) => createRoom(e)}
-                        className='inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 cursor-pointer'
+                        className='rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-900 hover:bg-purple-200 hover:ring-2 hover:ring-purple-500 focus:outline-none cursor-pointer'
                         value='Create Room'
                         type='button'
                       />

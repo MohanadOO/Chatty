@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, useContext } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
+import { SelectorIcon, CheckIcon } from '@heroicons/react/solid'
 import { getAllRooms, JoinRoom } from '../../Firebase'
 import { RoomContext } from '../../Context/RoomContext'
 import { ChatContext } from '../../Context/ChatContext'
@@ -54,18 +55,19 @@ export function RoomsComboBox() {
   return (
     <div className='w-full'>
       <Combobox value={selected} onChange={setSelected}>
-        <div className='relative mt-1'>
-          <div className='relative w-full cursor-default overflow-auto rounded-lg bg-white shadow-md'>
+        <div className='relative mt-1 w-[90%] h-36 '>
+          <div className='relative w-full cursor-default rounded-lg bg-white shadow-md'>
             <Combobox.Input
-              className='w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0'
+              className='w-full py-2 px-3 text-sm ring-1 rounded-md ring-purple-500 focus:ring-2 focus:outline-none '
               displayValue={(person) => person?.data.name}
               onChange={(event) => setQuery(event.target.value)}
+              placeholder='Search...'
             />
             <Combobox.Button className='absolute inset-y-0 right-0 flex items-center pr-2'>
-              {/* <SelectorIcon
+              <SelectorIcon
                 className='h-5 w-5 text-gray-400'
                 aria-hidden='true'
-              /> */}
+              />
             </Combobox.Button>
           </div>
           <Transition
@@ -75,7 +77,7 @@ export function RoomsComboBox() {
             leaveTo='opacity-0'
             afterLeave={() => setQuery('')}
           >
-            <Combobox.Options className='absolute mt-1 max-h-32 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+            <Combobox.Options className='scrollbar-thin scrollbar-thumb-purple-700 active:scrollbar-thumb-purple-400 scrollbar-track-slate-100 dark:scrollbar-track-zinc-900 dark:scrollbar-thumb-purple-900 scroll-smooth absolute mt-1 max-h-32 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
               {filteredRooms?.length === 0 && query !== '' ? (
                 <div className='relative cursor-default select-none py-2 px-4 text-gray-700'>
                   Nothing found.
@@ -86,7 +88,7 @@ export function RoomsComboBox() {
                     key={room.data.name + room.data.roomAvatar}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active ? 'bg-teal-600 text-white' : 'text-gray-900'
+                        active ? 'bg-purple-600 text-white' : 'text-gray-900'
                       }`
                     }
                     value={room}
@@ -111,10 +113,13 @@ export function RoomsComboBox() {
                         {selected ? (
                           <span
                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                              active ? 'text-white' : 'text-teal-600'
+                              active ? 'text-white' : 'text-purple-600'
                             }`}
                           >
-                            {/* <CheckIcon className='h-5 w-5' aria-hidden='true' /> */}
+                            <CheckIcon
+                              className='h-5 w-5 text-black'
+                              aria-hidden='true'
+                            />
                           </span>
                         ) : null}
                       </div>
@@ -124,10 +129,11 @@ export function RoomsComboBox() {
               )}
             </Combobox.Options>
           </Transition>
-          <div onClick={EnterRoom} className='mt-3 text-center'>
+          <div className='mt-5'>
             <button
+              onClick={EnterRoom}
               type='submit'
-              className='inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
+              className='rounded-md border border-transparent bg-purple-100 px-4 py-2 text-sm font-semibold text-purple-900 hover:bg-purple-200 hover:ring-2 hover:ring-purple-500 focus:outline-none cursor-pointer'
             >
               Join Room
             </button>

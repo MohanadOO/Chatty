@@ -180,8 +180,8 @@ function Signup() {
       {userLoggedIn && <Navigate to='/chat' replace />}
       {errors.password ? handleError('Password') : null}
       {errors.username ? handleError('Username') : null}
-      <div className='border-2 border-primary-500/90  py-16 px-2 max-w-[750px]  absolute top-[50%] -translate-y-[50%] w-full rounded-md shadow-lg flex flex-col  '>
-        <h1 className='text-center mb-5'>Sign Up</h1>
+      <div className='mt-10 border-2 border-purple-700/90  py-16 px-2 max-w-[750px]  absolute top-[50%] -translate-y-[50%] w-full rounded-md shadow-lg flex flex-col  '>
+        <h1 className='text-4xl text-center mb-5'>Sign Up</h1>
         <div
           onClick={handleGoogleSignUp}
           className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow'
@@ -197,7 +197,7 @@ function Signup() {
             <label htmlFor='username'>Username</label>
             <input
               {...register('username', { required: true, minLength: 5 })}
-              className='w-[350px] p-2 bg-primary-400 text-primary-white'
+              className='w-[350px] p-2 bg-purple-600 text-white'
               type='text'
               name='username'
             />
@@ -206,13 +206,13 @@ function Signup() {
               type='email'
               name='email'
               {...register('email', { required: true })}
-              className='w-[350px] p-2 bg-primary-400 text-primary-white'
+              className='w-[350px] p-2 bg-purple-600 text-white'
             />
             <label htmlFor='password'>Password</label>
             <div className='relative'>
               <input
                 {...register('password', { required: true, minLength: 7 })}
-                className='w-[350px] p-2 bg-primary-400 text-primary-white'
+                className='w-[350px] p-2 bg-purple-600 text-white'
                 type='password'
                 name='password'
                 id='password'
@@ -236,7 +236,7 @@ function Signup() {
                   required: true,
                   minLength: 7,
                 })}
-                className='w-[350px] p-2 bg-primary-400 text-primary-white'
+                className='w-[350px] p-2 bg-purple-600 text-white'
                 type='password'
                 name='confirm_password'
                 id='confirm_password'
@@ -257,11 +257,11 @@ function Signup() {
             <input
               type='submit'
               value='Sign Up'
-              className='bg-primary-500 font-semibold p-2 text-primary-text mb-5 rounded-md shadow-lg w-[220px] self-center text-xl cursor-pointer hover:scale-105 transition-transform'
+              className='bg-purple-700 font-semibold p-2 text-white mb-5 rounded-md shadow-lg w-[220px] self-center text-xl cursor-pointer hover:scale-105 transition-transform'
             />
             <button
               onClick={() => navigate('/login')}
-              className='text-primary-500 font-semibold bg-primary-50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl hover:scale-105 transition-transform'
+              className='text-purple-700 font-semibold bg-white/50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl hover:scale-105 transition-transform'
             >
               Log In
             </button>

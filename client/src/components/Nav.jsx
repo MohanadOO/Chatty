@@ -15,6 +15,8 @@ function Nav({ defaultTheme }) {
     const { signOut } = await import('firebase/auth')
     await signOut(auth)
     localStorage.setItem('loggedIn', false)
+    localStorage.removeItem('users_info')
+    localStorage.removeItem('rooms_messages')
     setUserLoggedIn(false)
   }
 
@@ -34,9 +36,13 @@ function Nav({ defaultTheme }) {
   }
 
   return (
-    <nav className=' dark:bg-primary-dark-400 w-full text-lg h-[10vh] flex flex-col justify-center px-10'>
-      <ul className={userLoggedIn ? 'flex flex-row-reverse' : 'flex gap-10'}>
-        {userLoggedIn ? (
+    <nav className='dark:bg-zinc-900 w-full text-lg h-[10vh] flex flex-col justify-center px-10'>
+      <ul
+        className={
+          currentUser || userLoggedIn ? 'flex flex-row-reverse' : 'flex gap-10'
+        }
+      >
+        {userLoggedIn || currentUser ? (
           <>
             {JSON.parse(localStorage.getItem('user')) ||
             currentUser.photoURL ? (
@@ -81,17 +87,17 @@ function Nav({ defaultTheme }) {
                     />
                     {theme === 'light' ? (
                       <div
-                        className='cursor-pointer hover:scale-125 transition-transform text-primary-500 dark:text-white'
+                        className='cursor-pointer hover:scale-125 transition-transform text-purple-700 dark:text-white'
                         onClick={toggleTheme}
                       >
-                        <MoonIcon className={'w-8 hover:fill-primary-500'} />
+                        <MoonIcon className={'w-8 hover:fill-purple-700'} />
                       </div>
                     ) : (
                       <div
-                        className='cursor-pointer hover:scale-125 transition-transform text-primary-500 dark:text-white'
+                        className='cursor-pointer hover:scale-125 transition-transform text-purple-700 dark:text-white'
                         onClick={toggleTheme}
                       >
-                        <SunIcon className={'w-8 hover:fill-primary-500'} />
+                        <SunIcon className={'w-8 hover:fill-purple-700'} />
                       </div>
                     )}
                   </>
@@ -103,23 +109,23 @@ function Nav({ defaultTheme }) {
           </>
         ) : (
           <Link
-            className='mr-auto text-xl bg-primary-500 py-1 px-8  rounded-lg relative hover:scale-110 transition-transform shadow-md cursor-pointer shadow-primary-500 text-white'
+            className='mr-auto text-xl bg-purple-700 py-1 px-8  rounded-lg relative hover:scale-110 transition-transform shadow-md cursor-pointer shadow-purple-700 text-white'
             to='/'
           >
             Sheesh Chat
-            <div className='absolute bottom-0 left-0 border-[12px] border-transparent border-l-primary-500 bg-transparent translate-y-2'></div>
+            <div className='absolute bottom-0 left-0 border-[12px] border-transparent border-l-purple-700 bg-transparent translate-y-2'></div>
           </Link>
         )}
-        {!userLoggedIn ? (
+        {currentUser == null ? (
           <>
             <Link
-              className='bg-primary-500 py-2 px-5  border-2 border-primary-500 rounded-md  hover:scale-105 transition-all shadow-md shadow-primary-500 text-white'
+              className='bg-purple-700 py-2 px-5  border-2 border-purple-700 rounded-md  hover:scale-105 transition-all shadow-md shadow-purple-700 text-white'
               to='./signup'
             >
               Sign Up
             </Link>
             <Link
-              className='border-primary-500 border-2 py-2 px-5 text-primary-500 dark:text-white rounded-md hover:border-2  hover:scale-105 transition-all shadow-md shadow-primary-500'
+              className='border-purple-700 border-2 py-2 px-5 text-purple-700 dark:text-white rounded-md hover:border-2  hover:scale-105 transition-all shadow-md shadow-purple-700'
               to='./login'
             >
               Log In
@@ -150,16 +156,14 @@ function UserImage({ currentUser, handleImageError, logout }) {
       <Menu.Items className='absolute z-20 right-0 mt-12 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-left'>
         <div className='px-1 py-1 '>
           <Menu.Item>
-            {({ active }) => (
-              <div class='py-3 px-4'>
-                <span class='block text-sm text-gray-900 dark:text-white'>
-                  {currentUser?.displayName}
-                </span>
-                <span class='block text-sm font-medium text-gray-500 truncate dark:text-gray-400'>
-                  {currentUser?.email}
-                </span>
-              </div>
-            )}
+            <div class='py-3 px-4'>
+              <span class='block text-sm text-gray-900'>
+                {currentUser?.displayName}
+              </span>
+              <span class='block text-sm font-medium text-gray-500 truncate dark:text-gray-400'>
+                {currentUser?.email}
+              </span>
+            </div>
           </Menu.Item>
         </div>
         <div className='px-1 py-1 '>

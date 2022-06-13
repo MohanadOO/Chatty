@@ -16,11 +16,11 @@ export function JoinRoomModal() {
 
   return (
     <>
-      <div className=' flex items-center justify-center'>
+      <div className='flex items-center justify-center'>
         <button
           type='button'
           onClick={openModal}
-          className='flex items-center gap-3 hover:rounded-lg px-3 w-full py-2 text-sm hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mb-3 hover:text-white hover:bg-primary-500 border-primary-500/20 border-b-2 dark:border-primary-white/50 transition-colors'
+          className='flex items-center gap-3 hover:rounded-lg px-3 w-full py-2 text-sm hover:bg-opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 mb-3 hover:text-white hover:bg-purple-700 border-purple-700/20 border-b-2 dark:border-white/50 transition-colors'
         >
           <AddIcon color={'black hover:white'} />
           Join Room
@@ -52,14 +52,14 @@ export function JoinRoomModal() {
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white p-6 text-left h-64 align-middle shadow-xl transition-all'>
+                <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white py-14 px-10 text-left align-middle shadow-xl transition-all'>
                   <Dialog.Title
                     as='h3'
-                    className='text-lg text-center font-medium leading-6 text-gray-900'
+                    className='text-xl font-semibold leading-6 text-gray-700 mb-5'
                   >
                     Room Name
                   </Dialog.Title>
-                  <RoomsComboBox />
+                  <RoomsComboBox closeModal={closeModal} />
                 </Dialog.Panel>
               </Transition.Child>
             </div>

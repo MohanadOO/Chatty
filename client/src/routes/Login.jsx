@@ -48,9 +48,7 @@ function Login() {
         const docRef = doc(db, 'users', currentUser.currentUser.uid)
         const docSnap = await getDoc(docRef)
 
-        if (docSnap.exists()) {
-          console.log('Logged In')
-        } else {
+        if (!docSnap.exists()) {
           await setDoc(doc(db, 'users', currentUser.currentUser.uid), {
             name: currentUser.currentUser.displayName,
             profilePicture: currentUser.currentUser.photoURL,
@@ -98,9 +96,7 @@ function Login() {
           const docRef = doc(db, 'users', currentUser.currentUser.uid)
           const docSnap = await getDoc(docRef)
 
-          if (docSnap.exists()) {
-            console.log('Logged In')
-          } else {
+          if (!docSnap.exists()) {
             await setDoc(doc(db, 'users', currentUser.currentUser.uid), {
               name: currentUser.currentUser.displayName,
               profilePicture: currentUser.currentUser.photoURL,
@@ -157,8 +153,8 @@ function Login() {
       {userLoggedIn && <Navigate to='/chat' replace />}
       {errors.password ? handleError('Password') : null}
       {errors.username ? handleError('Username') : null}
-      <div className=' border-2 border-primary-500   max-w-[550px] w-full py-10 px-32 rounded-md shadow-lg flex flex-col items-center absolute top-[50%] -translate-y-[50%]'>
-        <h1 className='text-center mb-5 underline-offset-2'>Log In</h1>
+      <div className='mt-10 border-2 border-purple-700 max-w-[550px] w-full py-10 px-32 rounded-md shadow-lg flex flex-col items-center absolute top-[50%] -translate-y-[50%]'>
+        <h1 className='text-4xl text-center mb-5 underline-offset-2'>Log In</h1>
         <div
           onClick={handleGoogleSignIn}
           className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
@@ -172,7 +168,7 @@ function Login() {
           </label>
           <input
             {...register('email', { required: true })}
-            className='w-[350px] text-primary-white p-2 bg-primary-400 rounded-md '
+            className='w-[350px] text-white p-2 bg-purple-600 rounded-md '
             type='email'
             name='email'
           />
@@ -182,7 +178,7 @@ function Login() {
           <div className='relative'>
             <input
               {...register('password', { required: true, minLength: 7 })}
-              className='w-[350px] text-primary-white p-2 bg-primary-400 rounded-md'
+              className='w-[350px] text-white p-2 bg-purple-600 rounded-md'
               type='password'
               id='loginPassword'
             />
@@ -201,13 +197,12 @@ function Login() {
           <input
             type='submit'
             value='Log In'
-            // onClick={toast.dismiss()}
-            className='bg-primary-500 text-primary-text p-2 my-5 rounded-md shadow-lg w-[220px] self-center text-xl cursor-pointer font-semibold hover:scale-105 transition-transform'
+            className='bg-purple-700 text-white p-2 my-5 rounded-md shadow-lg w-[220px] self-center text-xl cursor-pointer font-semibold hover:scale-105 transition-transform'
           />
         </form>
         <button
           onClick={() => navigate('/signup')}
-          className='text-primary-500 bg-primary-50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl font-semibold hover:scale-105 transition-transform'
+          className='text-purple-700 bg-white/50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl font-semibold hover:scale-105 transition-transform'
         >
           Sign Up
         </button>
