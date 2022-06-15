@@ -27,10 +27,6 @@ export function DiscloseRooms() {
 
     setFriend('')
 
-    if (name !== '') {
-      socket.emit('join_room', id)
-    }
-
     setSwitchTab(1)
   }
 
@@ -66,10 +62,10 @@ export function DiscloseRooms() {
                                   room.users
                                 )
                               }
-                              className='flex items-center gap-5 w-full py-1 px-3 hover:bg-purple-700  cursor-pointer rounded-md hover:text-white transition-colors'
+                              className='flex items-center gap-5 w-full py-1 px-3 hover:bg-purple-500  cursor-pointer rounded-md hover:text-white transition-colors'
                             >
                               <img
-                                className='w-8 rounded-full bg-transparent'
+                                className='w-7 rounded-full bg-white'
                                 key={`${room.name}_avatar`}
                                 src={room.roomAvatar}
                                 alt='room_avatar'
