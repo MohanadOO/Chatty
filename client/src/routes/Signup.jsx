@@ -141,38 +141,26 @@ function Signup() {
     if (data.password === data.confirm_password) {
       registerUser(data)
     } else {
-      toast.error(
-        (t) => <span className='error_msg'>Password not match!</span>,
-        {
-          style: {
-            backgroundColor: '#5447BD',
-          },
-        }
-      )
+      toast.error((t) => (
+        <span className='font-semibold'>Password not match!</span>
+      ))
     }
   }
 
   function handleError(field) {
-    return toast.error(
-      (t) => (
-        <>
-          {field === 'Username' ? (
-            <span className='error_msg'>
-              Username must be 5 characters or more
-            </span>
-          ) : (
-            <span className='error_msg'>
-              Password must be 7 characters or more
-            </span>
-          )}
-        </>
-      ),
-      {
-        style: {
-          backgroundColor: '#5447BD',
-        },
-      }
-    )
+    return toast.error((t) => (
+      <>
+        {field === 'Username' ? (
+          <span className='font-bold'>
+            Username must be 5 characters or more
+          </span>
+        ) : (
+          <span className='font-bold'>
+            Password must be 7 characters or more
+          </span>
+        )}
+      </>
+    ))
   }
 
   return (
@@ -261,7 +249,7 @@ function Signup() {
             />
             <button
               onClick={() => navigate('/login')}
-              className='text-purple-700 font-semibold bg-white/50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl hover:scale-105 transition-transform'
+              className='text-purple-700 font-semibold bg-white border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl hover:scale-105 transition-transform'
             >
               Log In
             </button>

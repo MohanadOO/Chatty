@@ -74,6 +74,7 @@ function Nav({ defaultTheme, socket }) {
                     handleImageError={handleImageError}
                     logout={logout}
                     imageError={imageError}
+                    theme={theme}
                   />
 
                   {theme === 'light' ? (
@@ -144,28 +145,45 @@ function Nav({ defaultTheme, socket }) {
   )
 }
 
-function UserImage({ currentUser, handleImageError, logout, imageError }) {
+function UserImage({
+  currentUser,
+  handleImageError,
+  logout,
+  imageError,
+  theme,
+}) {
   return (
     <Menu as='div' className='relative flex'>
       <Menu.Button>
         {imageError ? (
-          <span class='inline-block h-[2.875rem] w-[2.875rem] bg-gray-100 rounded-full overflow-hidden'>
+          <span className='inline-block h-[2.875rem] w-[2.875rem] bg-gray-100 rounded-full overflow-hidden ring-green-400 ring-2 active:ring-4 transition-all'>
             <svg
-              class='h-full w-full text-gray-300'
+              className='h-full w-full text-gray-300 dark:text-gray-100 dark:bg-gray-800'
               width='16'
               height='16'
               viewBox='0 0 16 16'
               fill='none'
               xmlns='http://www.w3.org/2000/svg'
             >
-              <rect
-                x='0.62854'
-                y='0.359985'
-                width='15'
-                height='15'
-                rx='7.5'
-                fill='white'
-              />
+              {theme === 'light' ? (
+                <rect
+                  x='0.62854'
+                  y='0.359985'
+                  width='15'
+                  height='15'
+                  rx='7.5'
+                  fill='white'
+                />
+              ) : (
+                <rect
+                  x='0.62854'
+                  y='0.359985'
+                  width='15'
+                  height='15'
+                  rx='7.5'
+                  fill='black'
+                />
+              )}
               <path
                 d='M8.12421 7.20374C9.21151 7.20374 10.093 6.32229 10.093 5.23499C10.093 4.14767 9.21151 3.26624 8.12421 3.26624C7.0369 3.26624 6.15546 4.14767 6.15546 5.23499C6.15546 6.32229 7.0369 7.20374 8.12421 7.20374Z'
                 fill='currentColor'
@@ -182,7 +200,7 @@ function UserImage({ currentUser, handleImageError, logout, imageError }) {
               className='rounded-full w-10 h-10 ring-green-400 ring-2 active:ring-4 transition-all'
               onError={handleImageError}
               src={
-                JSON.parse(localStorage.getItem('user')).userAvatar ||
+                JSON.parse(localStorage.getItem('user'))?.userAvatar ||
                 currentUser?.photoURL
               }
               alt='user_pic'
@@ -204,6 +222,15 @@ function UserImage({ currentUser, handleImageError, logout, imageError }) {
             </div>
           </Menu.Item>
         </div>
+        {/* <div className='px-5 py-1'>
+          <Menu.Item>
+            {({ active }) => (
+              <button>
+                <span className=''>Change State</span>
+              </button>
+            )}
+          </Menu.Item>
+        </div> */}
         <div className='px-1 py-1 '>
           <Menu.Item>
             {({ active }) => (

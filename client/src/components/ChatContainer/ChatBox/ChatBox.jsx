@@ -167,16 +167,15 @@ export function ChatBox() {
       <div
         id='chat-box'
         ref={chatBoxScroll}
-        className='scrollbar-thin scrollbar-thumb-purple-700 active:scrollbar-thumb-purple-400 scrollbar-track-slate-100 dark:scrollbar-track-zinc-900 dark:scrollbar-thumb-purple-900 scroll-smooth flex flex-col justify-start overflow-y-auto mb-[100px] mt-5'
+        className='scrollbar-thumb-transparent scrollbar-track-transparent scrollbar-thin  hover:scrollbar-thumb-purple-700 active:scrollbar-thumb-purple-400 hover:scrollbar-track-slate-100 hover:dark:scrollbar-track-zinc-900 hover:dark:scrollbar-thumb-purple-900 scroll-smooth flex flex-col justify-start overflow-y-auto mb-[100px] mt-5'
       >
         <>
           {!chat ? (
             <div className='absolute top-[50%] left-[50%] translate-x-[-50%]'>
-              {localStorage.theme === 'dark' ? (
-                <StageSpinner size={40} color={'#fff'} />
-              ) : (
-                <StageSpinner size={40} color={'#000'} />
-              )}
+              <StageSpinner
+                size={40}
+                color={`${localStorage.theme === 'dark' ? '#fff' : '#000'}`}
+              />
             </div>
           ) : (
             chat?.map((message, index) => {
@@ -189,7 +188,7 @@ export function ChatBox() {
                           className='rounded-md w-6 md:w-7 self-start'
                           src={
                             JSON.parse(localStorage.getItem('user'))
-                              .userAvatar || currentUser?.photoURL
+                              ?.userAvatar || currentUser?.photoURL
                           }
                           onError={(e) =>
                             handleImageError(e, message?.sender?.name)
@@ -199,10 +198,10 @@ export function ChatBox() {
                       )}
                       {message.showAvatar ? (
                         <div className='ml-3'>
-                          <p className='text-xs md:text-sm mb-2'>You</p>
+                          <p className='text-xs md:text-sm mb-1 '>You</p>
                           <p
                             key={index}
-                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30 text-xs md:text-sm font-medium'
+                            className='bg-gray-300 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words shadow-sm text-xs md:text-sm font-medium'
                           >
                             {message.message}
                           </p>
@@ -211,7 +210,7 @@ export function ChatBox() {
                         <div className='ml-10'>
                           <p
                             key={index}
-                            className='bg-black/10 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
+                            className='bg-gray-300 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm  text-xs md:text-sm font-medium'
                           >
                             {message.message}
                           </p>
@@ -223,12 +222,12 @@ export function ChatBox() {
                       {message.showAvatar ? (
                         <div className='flex items-center gap-3 justify-end mr-5'>
                           <div>
-                            <p className='text-xs md:text-sm text-right mb-2'>
+                            <p className='text-xs md:text-sm text-right mb-1'>
                               {message.sender.name}
                             </p>
                             <p
                               key={index}
-                              className='inline-block ml-24 bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
+                              className='inline-block ml-24 bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm font-medium'
                             >
                               {message.message}
                             </p>
@@ -246,7 +245,7 @@ export function ChatBox() {
                         <div className='flex items-center gap-3 justify-end mr-[60px]'>
                           <p
                             key={index}
-                            className='bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm dark:shadow-white border-2 dark:border-white/30 border-black/30  text-xs md:text-sm font-medium'
+                            className='bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm font-medium'
                           >
                             {message.message}
                           </p>
@@ -262,9 +261,9 @@ export function ChatBox() {
 
         <form className='p-3  flex gap-2 items-center absolute bottom-0 w-full'>
           <input
-            className='py-4 px-5 md:py-5 md:px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-purple-600/50 border-2'
+            className='outline-none py-4 px-5 md:py-5 md:px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-purple-600/50 border-2 focus:border-purple-600'
             type='text'
-            placeholder='Write a Message...'
+            placeholder='Write a Message'
             onChange={handleMessage}
             value={message}
           />

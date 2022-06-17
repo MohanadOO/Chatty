@@ -6,7 +6,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
       name.split(' ')[0]
     }&length=1`
   }
-  
+
   return (
     <>
       {room || friend ? (
@@ -14,13 +14,17 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
           <div className='relative cursor-pointer'>
             <img
               className={`${
-                friendStatue === 'online' ? 'ring-green-400 ' : 'ring-gray-400 '
+                room
+                  ? 'ring-black dark:ring-white'
+                  : friendStatue === 'online'
+                  ? 'ring-green-400 '
+                  : 'ring-gray-400 '
               } ring-2 w-10 rounded-full`}
               src={room?.roomAvatar || friend?.avatar}
               onError={(e) => handleImageError(e, friend.name || room.name)}
               alt={room?.roomAvatar ? 'room_avatar' : 'friend_avatar'}
               title={
-                friendStatue === 'online' ? 'Online' : room ? '' : 'Offline'
+                room ? '' : friendStatue === 'online' ? 'Online' : 'Offline'
               }
             />
             {friend && (
@@ -40,7 +44,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
                 {userTyping} is typing...
               </span>
             )}
-            {room && userTyping?.roomRef?.id === room?.id && (
+            {room && userTyping?.roomRef === room?.id && (
               <span className='text-xs text-slate-600 dark:text-slate-100'>
                 {userTyping?.currentUserName} is typing...
               </span>

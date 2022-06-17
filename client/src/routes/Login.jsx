@@ -128,24 +128,17 @@ function Login() {
   }
 
   function handleError(field) {
-    return toast.error(
-      (t) => (
-        <>
-          {field === 'email' ? (
-            <span className='error_msg'>Wrong Email</span>
-          ) : (
-            <span className='error_msg'>
-              Password must be 7 characters or more
-            </span>
-          )}
-        </>
-      ),
-      {
-        style: {
-          backgroundColor: '#5447BD',
-        },
-      }
-    )
+    return toast.error((t) => (
+      <>
+        {field === 'email' ? (
+          <span className='font-semibold'>Wrong Email</span>
+        ) : (
+          <span className='font-semibold'>
+            Password must be 7 characters or more
+          </span>
+        )}
+      </>
+    ))
   }
 
   return (
@@ -202,7 +195,7 @@ function Login() {
         </form>
         <button
           onClick={() => navigate('/signup')}
-          className='text-purple-700 bg-white/50 border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl font-semibold hover:scale-105 transition-transform'
+          className='text-purple-700 bg-white border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl font-semibold hover:scale-105 transition-transform'
         >
           Sign Up
         </button>

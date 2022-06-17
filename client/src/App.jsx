@@ -4,7 +4,7 @@ import { UserContext } from './Context/UserContext'
 import { Outlet } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
-function App() {
+function App({ socket }) {
   const [userLoggedIn, setUserLoggedIn] = useState(
     JSON.parse(localStorage.getItem('loggedIn')) || false
   )
@@ -27,7 +27,7 @@ function App() {
     <UserContext.Provider value={{ userLoggedIn, setUserLoggedIn }}>
       <div className='dark:bg-zinc-900 dark:text-white text-black transition-colors h-screen px-5 md:px-10 xl:px-44 '>
         <Toaster />
-        <Nav defaultTheme={localStorage.theme} />
+        <Nav defaultTheme={localStorage.theme} socket={socket} />
         <Outlet />
       </div>
     </UserContext.Provider>
