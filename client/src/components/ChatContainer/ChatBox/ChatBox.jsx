@@ -16,27 +16,35 @@ export function ChatBox() {
   const { socket, currentUser } = useContext(ChatContext)
   const { friend, room, friendStatue, roomUsersStatue } =
     useContext(RoomContext)
+
   const [chat, setChat] = useState([])
   const [message, setMessage] = useState('')
+
+  //Detect which user is typing.
   const [userTyping, setUserTyping] = useState('')
-  const [messageRef, setMessageRef] = useState('')
+
+  //Save room id's
+  const [roomRef, setRoomRef] = useState('')
+
+  //State to decide when if to show user avatar with the message sent or not
   const [showAvatar, setShowAvatar] = useState(true)
+
   const chatBoxScroll = useRef()
 
   function handleMessage(e) {
     setMessage(() => e.target.value)
 
-    if (messageRef) {
+    if (roomRef && friend) {
       //Emitting an Event that the user is typing to a particular user
       return socket.emit(
         'user_typing_user',
-        messageRef.new,
+        roomRef.new,
         currentUser.displayName
       )
     }
 
     //Emitting an Event that the user is typing to a room
-    return socket.emit('user_typing_room', room, currentUser.displayName)
+    return socket.emit('user_typing_room', roomRef.new, currentUser.displayName)
   }
 
   //Get Room or User chat log from the database
@@ -44,24 +52,30 @@ export function ChatBox() {
     if (friend) {
       getUsersConversation(currentUser, friend?.id).then((messages) => {
         setChat(() => messages.messages)
-        setMessageRef(() => {
-          return { old: messageRef.new, new: messages.id }
+        setRoomRef(() => {
+          return { old: roomRef.new, new: messages.id }
         })
       })
     }
     if (room) {
       getRoomMessages(room?.id).then((messages) => {
         setChat(() => messages)
-        setMessageRef('')
+        setRoomRef(() => {
+          return { old: roomRef.new, new: room.id }
+        })
       })
     }
   }, [friend, room])
 
   //Update the server when user join or leave a room
   useEffect(() => {
-    socket.emit('join_room', messageRef?.new)
-    socket.emit('leave_room', messageRef?.old)
-  }, [messageRef])
+    if (roomRef !== '' && roomRef?.new !== roomRef?.old) {
+      socket.emit('join_room', roomRef?.new)
+      if (roomRef?.old) {
+        socket.emit('leave_room', roomRef?.old)
+      }
+    }
+  }, [roomRef])
 
   //Make the chat box scroll into view
   useEffect(() => {
@@ -79,10 +93,6 @@ export function ChatBox() {
 
   //Receive information's From the socket
   useEffect(() => {
-    socket.on('allUsers', (payload) => {
-      console.log(payload, friend)
-    })
-
     socket.on('receive_message', (payload) => {
       setShowAvatar(true)
       setChat(() => [...payload.chat])
@@ -94,7 +104,6 @@ export function ChatBox() {
 
     socket.on('user_typing_to_room', (payload) => {
       setUserTyping(() => payload)
-      console.log(payload)
     })
   }, [socket])
 
@@ -120,35 +129,34 @@ export function ChatBox() {
       })
       if (friend) {
         //Send Messages through socket
-        sendUserMessageSocket(socket, messageDetails, chat, messageRef?.new)
+        sendUserMessageSocket(socket, messageDetails, chat, roomRef?.new)
       } else {
         sendMessageSocket(socket, messageDetails, chat, room)
       }
     } else {
       setChat([messageDetails])
       if (friend) {
-        sendUserMessageSocket(socket, messageDetails, chat, messageRef?.new)
+        sendUserMessageSocket(socket, messageDetails, chat, roomRef?.new)
       } else {
         sendMessageSocket(socket, messageDetails, chat, room)
       }
     }
 
-    //Resetting message state
-    setMessage('')
-
     //save Message in the Database
     if (friend) {
-      saveUserMessage(messageRef?.new, messageDetails)
+      saveUserMessage(roomRef?.new, messageDetails)
     } else {
-      saveMessage(room.id, messageDetails)
+      saveMessage(roomRef?.new, messageDetails)
     }
+
+    //Resetting message state
+    setMessage('')
 
     setShowAvatar(false)
     setUserTyping('')
   }
 
   function handleImageError(e, name) {
-    console.log(e, name)
     e.target.src = `https://ui-avatars.com/api/?name=${
       name.split(' ')[0]
     }&length=1`

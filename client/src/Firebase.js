@@ -6,7 +6,12 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from 'firebase/auth'
-import { arrayRemove, getFirestore, serverTimestamp } from 'firebase/firestore'
+import {
+  arrayRemove,
+  getFirestore,
+  serverTimestamp,
+  Timestamp,
+} from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { nanoid } from 'nanoid'
 import toast from 'react-hot-toast'
@@ -235,10 +240,11 @@ export const addFriend = async (currentUser, friendID) => {
 //Save Message
 export const saveMessage = async (roomId, message) => {
   const { doc, updateDoc, arrayUnion } = await import('firebase/firestore')
-  // const time = serverTimestamp()
+
+  const currentTime = Timestamp.now()
   try {
     updateDoc(doc(db, 'rooms', roomId), {
-      messages: arrayUnion({ ...message, createdAt: serverTimestamp() }),
+      messages: arrayUnion({ ...message, createdAt: currentTime }),
     })
   } catch (error) {
     console.error(error)

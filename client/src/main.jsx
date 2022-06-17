@@ -6,15 +6,20 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './routes/Login'
 import Signup from './routes/Signup'
 import Chat from './routes/Chat'
+import Home from './routes/Home'
+
+import io from 'socket.io-client'
+const socket = io.connect(import.meta.env.VITE_SERVER_URL)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App />}>
-          <Route path='login' element={<Login />} />
-          <Route path='signup' element={<Signup />} />
-          <Route path='chat' element={<Chat />} />
+        <Route path='/' exact element={<Home socket={socket} />} />
+        <Route path='/' element={<App socket={socket} />}>
+          <Route path='login' element={<Login socket={socket} />} />
+          <Route path='signup' element={<Signup socket={socket} />} />
+          <Route path='chat' element={<Chat socket={socket} />} />
           <Route
             path='*'
             element={

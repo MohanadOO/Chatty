@@ -2,19 +2,20 @@ import { useState, useContext, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext'
 import { useAuth } from '../Firebase'
-import io from 'socket.io-client'
-import ChatContainer from '../components/ChatContainer'
+import ChatContainer from '../components/ChatContainer/ChatContainer'
 import { ChatContext } from '../Context/ChatContext'
 import { StageSpinner } from 'react-spinners-kit'
 
-const socket = io.connect('http://localhost:3001')
-
-function Chat() {
+function Chat({ socket }) {
   //Current User Information
   const currentUser = useAuth()
+
   const [loading, setLoading] = useState(true)
+
+  //User rooms list and friend list states from the database
   const [userRooms, setUserRooms] = useState(undefined)
   const [userFriends, setUserFriends] = useState(undefined)
+
   const { userLoggedIn } = useContext(UserContext)
 
   useEffect(() => {
@@ -43,7 +44,7 @@ function Chat() {
             const friendDetailsPromiseArr = i.map(async (friend) => {
               const { getDoc } = await import('firebase/firestore')
               return await getDoc(friend.friendRef).then((info) => {
-                return { data: info.data(), id: info.id }
+                return { data: info.data(), id: info.id, statue: 'offline' }
               })
             })
             Promise.all(friendDetailsPromiseArr).then((item) => {
@@ -57,6 +58,13 @@ function Chat() {
     }
     getData()
   }, [currentUser])
+
+  //Save user statues in the server after logging in.
+  useEffect(() => {
+    if (currentUser?.uid) {
+      socket.emit('login', currentUser?.uid)
+    }
+  }, [currentUser, userFriends])
 
   return (
     <ChatContext.Provider
