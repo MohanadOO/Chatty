@@ -7,10 +7,12 @@ import { ChevronUpIcon } from './../../Icons'
 import { AddFriendsModal } from '../../Modals/AddFriendsModal'
 
 export function DiscloseUsers() {
-  const { userFriends, socket } = useContext(ChatContext)
+  const { userFriends } = useContext(ChatContext)
   const { setFriend, setRoom, setSwitchTab, connectedUsersStatue } =
     useContext(RoomContext)
   const [loading, setLoading] = useState(true)
+
+  const [userFriendsStatues, setUserFriendsStatues] = useState([])
 
   useEffect(() => {
     if (userFriends) {
@@ -28,13 +30,24 @@ export function DiscloseUsers() {
     setSwitchTab(1)
   }
 
-  // useEffect(() => {
-  //   socket.on('users_status', (payload) => {
-  //     console.log(payload)
-  //   })
-  // }, [socket])
+  useEffect(() => {
+    if (userFriends) {
+      let userStatue
+      const friendsStateList = userFriends.map((friend) => {
+        const userExist = connectedUsersStatue.some((user) => {
+          if (user.user === friend.id) {
+            return (userStatue = user)
+          }
+        })
+        if (userExist) {
+          return { ...friend, statue: userStatue.statue }
+        }
+        return { ...friend, statue: 'offline' }
+      })
 
-  // console.log(connectedUsersStatue, userFriends)
+      setUserFriendsStatues(() => friendsStateList)
+    }
+  }, [connectedUsersStatue, userFriends])
 
   function handleImageError(e, name) {
     e.target.src = `https://ui-avatars.com/api/?name=${
@@ -58,7 +71,7 @@ export function DiscloseUsers() {
                 {!loading ? (
                   <>
                     <AddFriendsModal friends={userFriends} />
-                    {userFriends.map((friend, index) => {
+                    {userFriendsStatues.map((friend, index) => {
                       return (
                         <div className='flex items-center gap-5' key={index}>
                           {!friend?.data?.name ||
@@ -73,19 +86,34 @@ export function DiscloseUsers() {
                                   friend.data.profilePicture
                                 )
                               }
-                              className='flex items-center gap-5 w-full py-1 px-3 hover:bg-purple-700  cursor-pointer rounded-md hover:text-white transition-colors'
+                              className='flex items-center gap-5 w-full py-1 px-3 hover:bg-purple-500  cursor-pointer rounded-md hover:text-white transition-colors'
                             >
                               <div className='relative flex items-center justify-center'>
                                 <img
-                                  className='w-10 rounded-full fill-black'
+                                  className={`${
+                                    friend.statue === 'online'
+                                      ? 'ring-green-400 '
+                                      : 'ring-gray-400 '
+                                  } ring-2 w-10 rounded-full`}
                                   key={`${friend.data.name}_avatar`}
                                   src={`${friend.data.profilePicture}`}
+                                  title={`${
+                                    friend?.statue === 'online'
+                                      ? 'Online'
+                                      : 'Offline'
+                                  }`}
                                   onError={(e) =>
                                     handleImageError(e, friend.data.name)
                                   }
                                   alt='friend_avatar'
                                 />
-                                <span className='top-0 left-[19px] absolute w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full'></span>
+                                <span
+                                  className={`${
+                                    friend?.statue === 'online'
+                                      ? 'bg-green-400'
+                                      : 'bg-gray-600'
+                                  } bottom-0 left-[23px]  absolute w-[10px] h-[10px] border-2 border-white dark:border-gray-800 rounded-full`}
+                                ></span>
                               </div>
                               <p className='p-2 w-full' key={friend.data.name}>
                                 {friend.data.name}

@@ -1,10 +1,15 @@
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../../../../Firebase'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { StageSpinner } from 'react-spinners-kit'
+import { RoomContext } from '../../../../Context/RoomContext'
 
 function UsersDetails({ users }) {
+  const { connectedUsersStatue } = useContext(RoomContext)
+
   const [usersInfo, setUsersInfo] = useState([])
+  const [usersStatueInfo, setUsersStatueInfo] = useState([])
+
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,11 +20,11 @@ function UsersDetails({ users }) {
       users.map((user) => {
         const userInfo = getDoc(doc(db, 'users', user))
         userInfo.then((userDetails) => {
-          list.push({ data: userDetails.data(), id: userDetails.id })
+          list.push({ data: userDetails.data(), id: user })
           localStorage.setItem('users_info', JSON.stringify(list))
           setUsersInfo(
             list.map((user) => {
-              return user.data
+              return { data: user.data, id: user }
             })
           )
         })
@@ -36,16 +41,22 @@ function UsersDetails({ users }) {
 
         if (userLocalIdArr.includes(user)) {
           const indexOfData = userLocalIdArr.indexOf(user)
-          list.push(userLocalDataArr[indexOfData])
+          list.push({
+            data: userLocalDataArr[indexOfData],
+            id: userLocalIdArr[indexOfData],
+          })
         } else {
           const userInfo = getDoc(doc(db, 'users', user))
           userInfo.then((userDetails) => {
-            setUsersInfo((prevUsers) => [...prevUsers, userDetails.data()])
+            setUsersInfo((prevUsers) => [
+              ...prevUsers,
+              { data: userDetails.data(), id: user },
+            ])
             localStorage.setItem(
               'users_info',
               JSON.stringify([
                 ...usersLocalStorage,
-                { data: userDetails.data(), id: userDetails.id },
+                { data: userDetails.data(), id: user },
               ])
             )
           })
@@ -54,8 +65,28 @@ function UsersDetails({ users }) {
       setUsersInfo(list)
       list = []
     }
-    setLoading(false)
   }, [users])
+
+  useEffect(() => {
+    if (usersInfo) {
+      let userStatue
+      const usersStateInfo = usersInfo.map((friend) => {
+        const userExist = connectedUsersStatue.some((user) => {
+          if (user.user === friend.id) {
+            return (userStatue = user)
+          }
+        })
+        if (userExist) {
+          return { ...friend, statue: userStatue.statue }
+        }
+        return { ...friend, statue: 'offline' }
+      })
+      setUsersStatueInfo(() => usersStateInfo)
+      setLoading(false)
+    }
+  }, [connectedUsersStatue, usersInfo])
+
+  console.count('Render')
 
   function handleImageError(e, name) {
     e.target.src = `https://ui-avatars.com/api/?name=${
@@ -63,17 +94,18 @@ function UsersDetails({ users }) {
     }&length=1`
   }
 
-  const usersList = usersInfo?.map((user) => {
+  const usersList = usersStatueInfo?.map((user) => {
     return (
       <div className='relative cursor-pointer'>
         <img
-          className='w-6 border-2 border-white dark:border-gray-800 md:w-9 rounded-lg'
-          src={user?.profilePicture}
-          onError={(e) => handleImageError(e, user.name)}
+          className={`${
+            user?.statue === 'online' ? 'ring-green-400 ' : 'ring-gray-400 '
+          } w-6 ring-2 md:w-9 rounded-lg`}
+          src={user?.data.profilePicture}
+          onError={(e) => handleImageError(e, user.data.name)}
           alt='user_avatar'
-          title='Online'
+          title={`${user?.statue === 'online' ? 'Online' : 'Offline'}`}
         />
-        <span className='top-0 left-7 absolute w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full'></span>
       </div>
     )
   })
@@ -89,7 +121,7 @@ function UsersDetails({ users }) {
           {usersList[2]}
           {usersList.length > 3 ? (
             <a
-              class='flex items-center justify-center w-9 h-9 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-lg hover:bg-gray-600 dark:border-gray-800'
+              className='flex items-center justify-center w-6 h-6 md:w-9 md:h-9 text-xs font-medium text-white bg-gray-700 ring-2 ring-white rounded-lg hover:bg-gray-600 dark:ring-gray-800'
               href='#'
             >
               {usersList.length - 3}
