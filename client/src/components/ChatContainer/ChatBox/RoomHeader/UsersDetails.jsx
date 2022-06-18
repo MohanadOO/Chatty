@@ -86,7 +86,6 @@ function UsersDetails({ users }) {
     }
   }, [connectedUsersStatue, usersInfo])
 
-  console.count('Render')
 
   function handleImageError(e, name) {
     e.target.src = `https://ui-avatars.com/api/?name=${

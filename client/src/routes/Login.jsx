@@ -55,7 +55,6 @@ function Login() {
             rooms: [],
             friends: [],
           })
-          console.log('Create Document')
         }
       }
       getData().catch((error) => {
@@ -103,7 +102,6 @@ function Login() {
               rooms: [],
               friends: [],
             })
-            console.log('Create Document')
           }
         }
         getData().catch((error) => {

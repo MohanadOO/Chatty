@@ -15,7 +15,6 @@ export function CreateRoomModal() {
 
   //Create a new Room and Add it to the database.
   function createRoom(e) {
-    console.log(e)
     e.preventDefault()
     if (roomName === '') {
       return toast.error('Enter Room Name!')
