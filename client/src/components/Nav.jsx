@@ -1,11 +1,11 @@
-import { Menu } from '@headlessui/react'
+import { Menu, Dialog, Transition } from '@headlessui/react'
 import { Link, useLocation } from 'react-router-dom'
-import { useContext, useState } from 'react'
+import { useContext, useState, Fragment } from 'react'
 import { UserContext } from '../Context/UserContext'
 import { auth, useAuth } from '../Firebase'
 import { RotateSpinner } from 'react-spinners-kit'
 import { LogoutIcon, MoonIcon, SunIcon } from '../components/Icons'
-import { HomeIcon, ChatIcon } from '@heroicons/react/solid'
+import { HomeIcon, ChatIcon, MenuIcon } from '@heroicons/react/solid'
 
 function Nav({ defaultTheme, socket }) {
   const location = useLocation()
@@ -39,8 +39,25 @@ function Nav({ defaultTheme, socket }) {
   }
 
   return (
-    <nav className='dark:bg-zinc-900 w-full text-lg h-[10vh] flex flex-col justify-center px-10'>
-      <ul className='flex gap-5 items-center'>
+    <nav className='w-full text-lg h-[10vh] flex flex-col justify-center px-5 md:px-10 py-12'>
+      {/* Mobile Navigation */}
+      <ul className='sm:hidden flex'>
+        <li>
+          <MenuDialog theme={theme} toggleTheme={toggleTheme} />
+        </li>
+        <li className='ml-auto'>
+          <UserImage
+            currentUser={currentUser}
+            handleImageError={handleImageError}
+            logout={logout}
+            imageError={imageError}
+            theme={theme}
+          />
+        </li>
+      </ul>
+
+      {/* Desktop Navigation */}
+      <ul className='hidden sm:flex gap-5 items-center '>
         {userLoggedIn || currentUser ? (
           <>
             {JSON.parse(localStorage.getItem('user')) ||
@@ -248,6 +265,110 @@ function UserImage({
         </div>
       </Menu.Items>
     </Menu>
+  )
+}
+
+function MenuDialog({ theme, toggleTheme }) {
+  let [isOpen, setIsOpen] = useState(false)
+
+  function closeModal() {
+    setIsOpen(false)
+  }
+
+  function openModal() {
+    setIsOpen(true)
+  }
+
+  return (
+    <>
+      <div className='flex'>
+        <button
+          type='button'
+          onClick={openModal}
+          className='rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+        >
+          <MenuIcon width={20} />
+        </button>
+      </div>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as='div' className='relative z-10' onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter='ease-out duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='ease-in duration-200'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
+          >
+            <div className='fixed inset-0 bg-black bg-opacity-25' />
+          </Transition.Child>
+
+          <div className='fixed top-20 overflow-y-auto w-full'>
+            <div className='flex min-h-full items-center justify-center p-4 text-center'>
+              <Transition.Child
+                as={Fragment}
+                enter='ease-out duration-300'
+                enterFrom='opacity-0 scale-95'
+                enterTo='opacity-100 scale-100'
+                leave='ease-in duration-200'
+                leaveFrom='opacity-100 scale-100'
+                leaveTo='opacity-0 scale-95'
+              >
+                <Dialog.Panel
+                  as='ul'
+                  className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-purple-800 p-6 text-left align-middle shadow-xl transition-all flex flex-col gap-5 items-center'
+                >
+                  <li onClick={closeModal}>
+                    <Link
+                      className={`${
+                        location.pathname == '/'
+                          ? 'cursor-default '
+                          : 'hover:scale-110 transition-transform '
+                      } flex items-center gap-2 py-3 px-7 bg-purple-600 dark:bg-white text-white    dark:text-purple-800 rounded-full text-sm`}
+                      to='/'
+                    >
+                      Home
+                      <HomeIcon className='w-5 h-5' />
+                    </Link>
+                  </li>
+                  <li onClick={closeModal}>
+                    <Link
+                      className={`${
+                        location.pathname == '/chat'
+                          ? 'cursor-default '
+                          : 'hover:scale-110 transition-transform '
+                      } flex items-center gap-2 py-3 px-7 bg-purple-600 dark:bg-white text-white dark:text-purple-700 rounded-full text-sm mx-auto`}
+                      to='/chat'
+                    >
+                      Chat
+                      <ChatIcon className='w-5 h-5' />
+                    </Link>
+                  </li>
+
+                  {theme === 'light' ? (
+                    <li
+                      className='cursor-pointer hover:scale-125 transition-transform text-purple-700 dark:text-white'
+                      onClick={toggleTheme}
+                    >
+                      <MoonIcon className={'w-8 hover:fill-purple-700'} />
+                    </li>
+                  ) : (
+                    <li
+                      className='cursor-pointer hover:scale-125 transition-transform text-purple-700 dark:text-white'
+                      onClick={toggleTheme}
+                    >
+                      <SunIcon className={'w-8 hover:fill-purple-700'} />
+                    </li>
+                  )}
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
   )
 }
 

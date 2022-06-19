@@ -80,7 +80,7 @@ function Chat({ socket }) {
       <>
         {!userLoggedIn && <Navigate to='/login' replace />}
         {loading ? (
-          <div className=' absolute top-[50%] left-[50%] translate-x-[-50%]'>
+          <div className='absolute top-[50%] left-[50%] translate-x-[-50%]'>
             <StageSpinner size={50} color={'#000'} />
           </div>
         ) : (

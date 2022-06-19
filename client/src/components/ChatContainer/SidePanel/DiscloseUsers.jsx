@@ -61,7 +61,7 @@ export function DiscloseUsers() {
         <Disclosure defaultOpen>
           {({ open }) => (
             <>
-              <Disclosure.Button className='flex w-full gap-3 items-center rounded-lg border-2 px-3 py-2 text-sm  hover:border-purple-700 transition-colors duration-300'>
+              <Disclosure.Button className='flex w-full gap-3 items-center rounded-lg px-3 py-2 text-sm  transition-colors duration-300'>
                 <ChevronUpIcon
                   className={`${!open ? 'rotate-180 transform' : ''} h-3 w-3 `}
                 />

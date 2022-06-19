@@ -25,7 +25,7 @@ function App({ socket }) {
 
   return (
     <UserContext.Provider value={{ userLoggedIn, setUserLoggedIn }}>
-      <div className='dark:bg-zinc-900 dark:text-white text-black transition-colors h-screen px-5 md:px-10 xl:px-44 '>
+      <div className=' dark:text-white text-black transition-colors px-5 md:px-10 xl:px-44'>
         <Toaster />
         <Nav defaultTheme={localStorage.theme} socket={socket} />
         <Outlet />

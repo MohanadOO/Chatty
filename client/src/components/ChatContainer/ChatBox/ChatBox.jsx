@@ -162,7 +162,7 @@ export function ChatBox() {
     }&length=1`
   }
   return (
-    <div className='h-[75vh] md:h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-md dark:shadow-purple-700'>
+    <div className='h-[95%] sm:h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-md dark:shadow-purple-700'>
       <RoomHeader
         friend={friend}
         room={room}

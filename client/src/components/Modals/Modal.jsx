@@ -28,7 +28,7 @@ function Modal({
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto'>
-          <div className='flex min-h-full items-center justify-center p-4'>
+          <div className='flex min-h-full items-center justify-center p-8 sm:p-4'>
             <Transition.Child
               as={Fragment}
               enter='ease-out duration-300'
@@ -38,10 +38,10 @@ function Modal({
               leaveFrom='opacity-100 scale-100'
               leaveTo='opacity-0 scale-95'
             >
-              <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white py-14 px-10 text-left align-middle shadow-xl transition-all'>
+              <Dialog.Panel className='w-full max-w-md transform overflow-auto rounded-2xl bg-white dark:bg-purple-800 text-black dark:text-white py-14 px-10 text-left align-middle shadow-xl transition-all'>
                 <Dialog.Title
                   as='h3'
-                  className='text-xl font-semibold leading-6 text-gray-700'
+                  className='text-xl font-semibold leading-6 text-gray-700 dark:text-white'
                 >
                   {title}
                 </Dialog.Title>
@@ -52,7 +52,7 @@ function Modal({
                   <form onSubmit={(e) => createRoom(e)}>
                     <div className='mt-5'>
                       <input
-                        className='py-2 px-5 text-sm ring-1 rounded-md ring-purple-500 focus:ring-2 focus:outline-none'
+                        className='py-2 px-5 text-sm ring-1 text-black rounded-md ring-purple-500 focus:ring-2 focus:outline-none'
                         type='text'
                         placeholder='Room name...'
                         value={roomName}

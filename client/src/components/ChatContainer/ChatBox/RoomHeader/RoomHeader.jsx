@@ -19,7 +19,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
                   : friendStatue === 'online'
                   ? 'ring-green-400 '
                   : 'ring-gray-400 '
-              } ring-2 w-10 rounded-full`}
+              } ring-2 w-7 md:w-10 rounded-full`}
               src={room?.roomAvatar || friend?.avatar}
               onError={(e) => handleImageError(e, friend.name || room.name)}
               alt={room?.roomAvatar ? 'room_avatar' : 'friend_avatar'}
@@ -29,7 +29,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
             />
             {friend && (
               <span
-                className={`bottom-0 left-7 absolute w-3 h-3 border-2 border-white dark:border-gray-800 rounded-full ${
+                className={`bottom-0 left-5 md:left-7 absolute w-3 h-3 border-2 border-white dark:border-gray-800 rounded-full ${
                   friendStatue === 'online' ? 'bg-green-400' : 'bg-gray-600'
                 }`}
               ></span>
@@ -56,7 +56,7 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
         </div>
       ) : (
         <div className='flex items-center justify-center rounded-md gap-2 py-2 md:py-4 px-8 text-black dark:text-white shadow-sm shadow-purple-600/20 dark:shadow-purple-600/10 border-2 border-purple-700'>
-          <p className=''>No room entered</p>
+          <p>No room entered</p>
         </div>
       )}
     </>

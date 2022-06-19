@@ -51,7 +51,7 @@ export function RoomsComboBox({ closeModal }) {
         <div className='relative mt-1 w-[90%] h-36 '>
           <div className='relative w-full cursor-default rounded-lg bg-white shadow-md'>
             <Combobox.Input
-              className='w-full py-2 px-3 text-sm ring-1 rounded-md ring-purple-500 focus:ring-2 focus:outline-none '
+              className='w-full py-2 px-3 text-sm ring-1 rounded-md ring-purple-500 focus:ring-2 focus:outline-none text-black'
               displayValue={(person) => person?.data.name}
               onChange={(event) => setQuery(event.target.value)}
               placeholder='Search...'
