@@ -1,5 +1,8 @@
 import UsersDetails from './UsersDetails'
 
+import { motion } from 'framer-motion'
+import { fadeInChild, fadeInParent } from '../../../../Variants'
+
 function RoomHeader({ userTyping, room, friend, friendStatue }) {
   function handleImageError(e, name) {
     e.target.src = `https://ui-avatars.com/api/?name=${
@@ -10,9 +13,16 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
   return (
     <>
       {room || friend ? (
-        <div className='flex items-center rounded-md gap-2 py-3 px-4 md:py-4 md:px-8 text-black dark:text-white shadow-sm shadow-purple-600/20 dark:shadow-purple-600/10 border-2 border-purple-700'>
-          <div className='relative cursor-pointer'>
-            <img
+        <motion.div
+          variants={fadeInParent}
+          className='flex items-center rounded-md gap-2 py-3 px-4 md:py-4 md:px-8 text-black dark:text-white shadow-sm shadow-purple-600/20 dark:shadow-purple-600/10 border-2 border-purple-700'
+        >
+          <motion.div
+            variants={fadeInChild}
+            className='relative cursor-pointer'
+          >
+            <motion.img
+              variants={fadeInChild}
               className={`${
                 room
                   ? 'ring-black dark:ring-white'
@@ -34,9 +44,9 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
                 }`}
               ></span>
             )}
-          </div>
+          </motion.div>
           <div className='px-2 flex flex-col '>
-            <p className='text-xs sm:text-sm md:text-base text-medium text-shadow-sm'>
+            <p className='text-xs sm:text-sm md:text-base text-medium'>
               {room?.name || friend.name}
             </p>
             {userTyping === friend?.name && (
@@ -53,11 +63,14 @@ function RoomHeader({ userTyping, room, friend, friendStatue }) {
           <div className='ml-auto'>
             {room && <UsersDetails users={room?.users} />}
           </div>
-        </div>
+        </motion.div>
       ) : (
-        <div className='flex items-center justify-center rounded-md gap-2 py-2 md:py-4 px-8 text-black dark:text-white shadow-sm shadow-purple-600/20 dark:shadow-purple-600/10 border-2 border-purple-700'>
+        <motion.div
+          variants={fadeInParent}
+          className='flex items-center justify-center rounded-md gap-2 py-2 md:py-4 px-8 text-black dark:text-white shadow-sm shadow-purple-600/20 dark:shadow-purple-600/10 border-2 border-purple-700'
+        >
           <p>No room entered</p>
-        </div>
+        </motion.div>
       )}
     </>
   )

@@ -6,6 +6,9 @@ import { useState, useEffect, useContext } from 'react'
 import { getMatchedRooms } from '../../Firebase'
 import ChatBox from '../ChatContainer/ChatBox/ChatBox'
 
+import { motion } from 'framer-motion'
+import { fadeInParent } from '../../Variants'
+
 function ChatContainer() {
   const { userRooms, socket } = useContext(ChatContext)
 
@@ -55,7 +58,6 @@ function ChatContainer() {
     })
   }, [socket])
 
-
   useEffect(() => {
     if (friend) {
       const currentFriend = connectedUsersStatue.filter((users) => {
@@ -81,13 +83,23 @@ function ChatContainer() {
         connectedUsersStatue,
       }}
     >
-      <div className='md:flex hidden justify-center gap-3 py-5 h-[83vh] border-y-2 border-purple-600/40'>
+      <motion.div
+        variants={fadeInParent}
+        initial='initial'
+        animate='animate'
+        className='md:flex hidden justify-center gap-3 py-5 h-[83vh] border-y-2 border-purple-600/40 font-poppins'
+      >
         <SidePanel />
         <ChatBox />
-      </div>
-      <div className='block md:hidden'>
+      </motion.div>
+      <motion.div
+        variants={fadeInParent}
+        initial='initial'
+        animate='animate'
+        className='block md:hidden font-poppins overflow-auto'
+      >
         <MyTabs switchTab={switchTab} setSwitchTab={setSwitchTab} />
-      </div>
+      </motion.div>
     </RoomContext.Provider>
   )
 }
@@ -128,11 +140,11 @@ function MyTabs({ switchTab, setSwitchTab }) {
           Chat
         </Tab>
       </Tab.List>
-      <Tab.Panels className='h-[70vh] flex flex-col'>
-        <Tab.Panel className='flex justify-center mt-5 flex-1'>
+      <Tab.Panels className='flex flex-col'>
+        <Tab.Panel className='flex justify-center mt-5'>
           <SidePanel />
         </Tab.Panel>
-        <Tab.Panel className='flex justify-center mt-5 flex-1'>
+        <Tab.Panel className='flex justify-center mt-5 h-[73vh]'>
           <ChatBox />
         </Tab.Panel>
       </Tab.Panels>

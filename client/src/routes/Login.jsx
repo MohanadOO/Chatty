@@ -5,6 +5,9 @@ import toast from 'react-hot-toast'
 import { FillEye, FillEyeInvisible, GoogleIcon } from '../components/Icons'
 import { useNavigate, Navigate } from 'react-router-dom'
 
+import { motion } from 'framer-motion'
+import { fadeInParent, buttonVariant, fadeInLeft } from '../Variants'
+
 function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const { setUserLoggedIn, userLoggedIn } = useContext(UserContext)
@@ -126,7 +129,7 @@ function Login() {
   }
 
   function handleError(field) {
-    return toast.error((t) => (
+    return toast.error(() => (
       <>
         {field === 'email' ? (
           <span className='font-semibold'>Wrong Email</span>
@@ -140,36 +143,56 @@ function Login() {
   }
 
   return (
-    <div className='flex justify-center items-center'>
+    <div className='flex justify-center items-center h-[85vh]'>
       {userLoggedIn && <Navigate to='/chat' replace />}
       {errors.password ? handleError('Password') : null}
       {errors.username ? handleError('Username') : null}
-      <div className='mt-10 border-2 border-purple-700 max-w-[550px] w-full py-10 px-32 rounded-md shadow-lg flex flex-col items-center absolute top-[50%] -translate-y-[50%]'>
-        <h1 className='text-4xl text-center mb-5 underline-offset-2'>Log In</h1>
-        <div
+      <div className='max-w-sm md:max-w-[550px] w-full py-10 px-32 rounded-md shadow-lg dark:shadow-white/20 flex flex-col items-center'>
+        <h1 className='text-2xl md:text-4xl text-center mb-5 underline-offset-2'>
+          Log In
+        </h1>
+        <motion.div
+          variants={buttonVariant}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3 }}
           onClick={handleGoogleSignIn}
-          className=' /60 flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
+          className='flex items-center justify-center gap-3 text-base p-2 bg-black/5 dark:bg-white dark:text-black w-[250px] rounded-md self-center shadow-sm cursor-pointer hover:shadow-md transition-shadow mb-5'
         >
           <GoogleIcon width={20} height={20} />
           <button>Sign in with Google</button>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+        </motion.div>
+        <form
+          variants={fadeInParent}
+          initial='initial'
+          animate='animate'
+          onSubmit={handleSubmit(onSubmit)}
+          className='flex flex-col gap-5'
+        >
           <label className='text-lg' htmlFor='email'>
             Email
           </label>
-          <input
-            {...register('email', { required: true })}
-            className='w-[350px] text-white p-2 bg-purple-600 rounded-md '
-            type='email'
-            name='email'
-          />
+          <motion.div variants={fadeInLeft} initial='initial' animate='animate'>
+            <input
+              {...register('email', { required: true })}
+              className='w-[250px] md:w-[350px] text-white p-2 bg-purple-600 rounded-md '
+              type='email'
+              name='email'
+            />
+          </motion.div>
           <label className='text-lg' htmlFor='password'>
             Password
           </label>
-          <div className='relative'>
+          <motion.div
+            variants={fadeInLeft}
+            initial='initial'
+            animate='animate'
+            transition={{ delay: 0.2 }}
+            className='relative'
+          >
             <input
               {...register('password', { required: true, minLength: 7 })}
-              className='w-[350px] text-white p-2 bg-purple-600 rounded-md'
+              className='w-[250px] md:w-[350px] text-white p-2 bg-purple-600 rounded-md'
               type='password'
               id='loginPassword'
             />
@@ -183,20 +206,25 @@ function Login() {
                 <FillEyeInvisible width={20} height={20} color='white' />
               )}
             </div>
-          </div>
+          </motion.div>
 
-          <input
+          <motion.input
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             type='submit'
             value='Log In'
             className='bg-purple-700 text-white p-2 my-5 rounded-md shadow-lg w-[220px] self-center text-xl cursor-pointer font-semibold hover:scale-105 transition-transform'
           />
         </form>
-        <button
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ ease: 'linear', duration: 1.3 }}
           onClick={() => navigate('/signup')}
           className='text-purple-700 bg-white border-2 p-2 rounded-md shadow-lg w-[220px] text-center text-xl font-semibold hover:scale-105 transition-transform'
         >
           Sign Up
-        </button>
+        </motion.button>
       </div>
     </div>
   )

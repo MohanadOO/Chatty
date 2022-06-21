@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.6.2",
     "@heroicons/react": "^1.0.6",
     "firebase": "^9.8.1",
+    "framer-motion": "^6.3.11",
     "nanoid": "^3.3.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

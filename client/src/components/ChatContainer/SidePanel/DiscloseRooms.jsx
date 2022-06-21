@@ -6,6 +6,9 @@ import { StageSpinner } from 'react-spinners-kit'
 import { ChevronUpIcon } from './../../Icons'
 import { JoinRoomModal } from '../../Modals/JoinRoomModal'
 
+import { motion } from 'framer-motion'
+import { fadeInLeft } from '../../../Variants'
+
 export function DiscloseRooms() {
   const [loading, setLoading] = useState(false)
   const { userRooms, socket } = useContext(ChatContext)
@@ -48,7 +51,14 @@ export function DiscloseRooms() {
                     <JoinRoomModal />
                     {matchedRooms?.map((room, index) => {
                       return (
-                        <div className='flex items-center gap-5' key={index}>
+                        <motion.div
+                          variants={fadeInLeft}
+                          animate='animate'
+                          initial='initial'
+                          transition={{ delay: 0.1 * index }}
+                          className='flex items-center gap-5'
+                          key={index}
+                        >
                           {!room.name || !room.roomAvatar ? (
                             <p>Loading...</p>
                           ) : (
@@ -75,7 +85,7 @@ export function DiscloseRooms() {
                               </p>
                             </div>
                           )}
-                        </div>
+                        </motion.div>
                       )
                     })}
                   </>

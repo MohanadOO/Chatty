@@ -12,6 +12,10 @@ import RoomHeader from './RoomHeader/RoomHeader'
 import { sendMessageSocket, sendUserMessageSocket } from '../../../SocketIo'
 import { useInterval } from 'react-use'
 
+import { motion } from 'framer-motion'
+import { fadeInRightChild } from '../../../Variants'
+import { PaperAirplaneIcon } from '@heroicons/react/solid'
+
 export function ChatBox() {
   const { socket, currentUser } = useContext(ChatContext)
   const { friend, room, friendStatue, roomUsersStatue } =
@@ -162,7 +166,10 @@ export function ChatBox() {
     }&length=1`
   }
   return (
-    <div className='h-[95%] sm:h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow-md dark:shadow-purple-700'>
+    <motion.div
+      variants={fadeInRightChild}
+      className='h-[95%] sm:h-full rounded-md flex-1 flex flex-col max-w-5xl justify-between relative shadow- dark:shadow-purple-700'
+    >
       <RoomHeader
         friend={friend}
         room={room}
@@ -175,7 +182,7 @@ export function ChatBox() {
       <div
         id='chat-box'
         ref={chatBoxScroll}
-        className='scrollbar-thumb-transparent scrollbar-track-transparent scrollbar-thin  hover:scrollbar-thumb-purple-700 active:scrollbar-thumb-purple-400 hover:scrollbar-track-slate-100 hover:dark:scrollbar-track-zinc-900 hover:dark:scrollbar-thumb-purple-900 scroll-smooth flex flex-col justify-start overflow-y-auto mb-[100px] mt-5'
+        className='scrollbar-thumb-transparent scrollbar-track-transparent scrollbar-thin  hover:scrollbar-thumb-purple-700 active:scrollbar-thumb-purple-400 hover:scrollbar-track-slate-100 hover:dark:scrollbar-track-zinc-900 hover:dark:scrollbar-thumb-purple-900 scroll-smooth flex flex-col justify-start overflow-y-auto mb-[100px] mt-5 font-poppins'
       >
         <>
           {!chat ? (
@@ -209,7 +216,7 @@ export function ChatBox() {
                           <p className='text-xs md:text-sm mb-1 '>You</p>
                           <p
                             key={index}
-                            className='bg-gray-300 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words shadow-sm text-xs md:text-sm font-medium'
+                            className='bg-gray-200 dark:bg-gray-500 py-2 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words shadow-sm text-xs md:text-sm lg:text-base'
                           >
                             {message.message}
                           </p>
@@ -218,7 +225,7 @@ export function ChatBox() {
                         <div className='ml-10'>
                           <p
                             key={index}
-                            className='bg-gray-300 dark:bg-gray-500 py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words  shadow-sm  text-xs md:text-sm font-medium'
+                            className='bg-gray-200 dark:bg-gray-500 py-2 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tl-none break-words shadow-sm text-xs md:text-sm lg:text-base'
                           >
                             {message.message}
                           </p>
@@ -235,7 +242,7 @@ export function ChatBox() {
                             </p>
                             <p
                               key={index}
-                              className='inline-block ml-24 bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm font-medium'
+                              className='inline-block ml-24 bg-purple-600 text-white py-2 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm'
                             >
                               {message.message}
                             </p>
@@ -253,7 +260,7 @@ export function ChatBox() {
                         <div className='flex items-center gap-3 justify-end mr-[60px]'>
                           <p
                             key={index}
-                            className='bg-purple-600 text-white py-1 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm font-medium'
+                            className='bg-purple-600 text-white py-2 max-w-sm mb-2 pr-6 pl-3 text-md rounded-xl rounded-tr-none break-words shadow-sm  text-xs md:text-sm'
                           >
                             {message.message}
                           </p>
@@ -267,23 +274,23 @@ export function ChatBox() {
           )}
         </>
 
-        <form className='p-3  flex gap-2 items-center absolute bottom-0 w-full'>
+        <form className='p-3  flex gap-3 items-center absolute bottom-0 w-full'>
           <input
-            className='outline-none py-4 px-5 md:py-5 md:px-7 rounded-xl h-10 w-full bg-transparent shadow-none border-purple-600/50 border-2 focus:border-purple-600'
+            className='outline-none py-4 px-5 md:py-5 md:px-7 rounded-md h-10 w-full bg-transparent shadow-none border-purple-600/50 border-2 focus:border-purple-600'
             type='text'
             placeholder='Write a Message'
             onChange={handleMessage}
             value={message}
           />
           <button
-            className='bg-purple-600 text-white text-xs w-40 md:text-sm md:w-40 py-3 px-2 rounded-md'
+            className='bg-purple-600 text-white text-xs md:text-sm  py-3 px-5 rounded-lg'
             onClick={sendMessage}
           >
-            Send Message
+            <PaperAirplaneIcon className='w-5 rotate-90 cursor-pointer hover:scale-110' />
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

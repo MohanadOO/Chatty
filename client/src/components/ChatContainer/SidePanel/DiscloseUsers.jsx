@@ -6,6 +6,9 @@ import { RoomContext } from '../../../Context/RoomContext'
 import { ChevronUpIcon } from './../../Icons'
 import { AddFriendsModal } from '../../Modals/AddFriendsModal'
 
+import { motion } from 'framer-motion'
+import { fadeInLeft } from '../../../Variants'
+
 export function DiscloseUsers() {
   const { userFriends } = useContext(ChatContext)
   const { setFriend, setRoom, setSwitchTab, connectedUsersStatue } =
@@ -73,7 +76,14 @@ export function DiscloseUsers() {
                     <AddFriendsModal friends={userFriends} />
                     {userFriendsStatues.map((friend, index) => {
                       return (
-                        <div className='flex items-center gap-5' key={index}>
+                        <motion.div
+                          variants={fadeInLeft}
+                          animate='animate'
+                          initial='initial'
+                          transition={{ delay: 0.1 * index }}
+                          className='flex items-center gap-5'
+                          key={index}
+                        >
                           {!friend?.data?.name ||
                           !friend?.data?.profilePicture ? (
                             <p>Loading...</p>
@@ -120,7 +130,7 @@ export function DiscloseUsers() {
                               </p>
                             </div>
                           )}
-                        </div>
+                        </motion.div>
                       )
                     })}
                   </>
