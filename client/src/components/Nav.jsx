@@ -45,15 +45,32 @@ function Nav({ defaultTheme, socket }) {
         <li>
           <MenuDialog theme={theme} toggleTheme={toggleTheme} />
         </li>
-        <li className='ml-auto'>
-          <UserImage
-            currentUser={currentUser}
-            handleImageError={handleImageError}
-            logout={logout}
-            imageError={imageError}
-            theme={theme}
-          />
-        </li>
+        {userLoggedIn || currentUser ? (
+          <li className='ml-auto'>
+            <UserImage
+              currentUser={currentUser}
+              handleImageError={handleImageError}
+              logout={logout}
+              imageError={imageError}
+              theme={theme}
+            />
+          </li>
+        ) : (
+          <li className='flex gap-2 ml-auto items-center'>
+            <Link
+              className='bg-purple-700 dark:bg-purple-700 dark:text-white py-2 px-2 text-xs border-2 border-purple-700 dark:border-transparent rounded-md  hover:scale-105 transition-all shadow-md  text-white'
+              to='./signup'
+            >
+              Sign Up
+            </Link>
+            <Link
+              className='border-purple-700 dark:border-white border-2 py-2 px-2 text-xs text-purple-700 dark:text-white rounded-md hover:border-2  hover:scale-105 transition-all shadow-md '
+              to='./login'
+            >
+              Log In
+            </Link>
+          </li>
+        )}
       </ul>
 
       {/* Desktop Navigation */}
@@ -67,7 +84,7 @@ function Nav({ defaultTheme, socket }) {
                   <Link
                     className={`${
                       location.pathname == '/'
-                        ? 'cursor-default '
+                        ? 'border-2 border-black dark:border-white font-bold '
                         : 'hover:scale-110 transition-transform '
                     } flex items-center gap-2 py-3 px-7 bg-purple-600 text-white rounded-full text-sm`}
                     to='/'
@@ -78,7 +95,7 @@ function Nav({ defaultTheme, socket }) {
                   <Link
                     className={`${
                       location.pathname == '/chat'
-                        ? 'cursor-default '
+                        ? 'border-2 border-black dark:border-white font-bold '
                         : 'hover:scale-110 transition-transform '
                     } flex items-center gap-2 py-3 px-7 bg-purple-600 text-white rounded-full text-sm mx-auto`}
                     to='/chat'
@@ -214,7 +231,7 @@ function UserImage({
         ) : (
           <>
             <img
-              className='rounded-full w-10 h-10 ring-green-400 ring-2 active:ring-4 transition-all'
+              className='rounded-full w-10 h-10 ring-green-400 ring-2 active:ring-4 hover:scale-105 transition-all'
               onError={handleImageError}
               src={
                 JSON.parse(localStorage.getItem('user'))?.userAvatar ||
@@ -222,7 +239,7 @@ function UserImage({
               }
               alt='user_pic'
             />
-            <span className='bg-green-400 bottom-0 left-7  absolute w-[10px] h-[10px] border-2 border-white dark:border-gray-800 rounded-full'></span>
+            <span className='bg-green-400 bottom-0 left-7 absolute w-[10px] h-[10px] border-2 border-white dark:border-gray-800 rounded-full'></span>
           </>
         )}
       </Menu.Button>
@@ -239,15 +256,6 @@ function UserImage({
             </div>
           </Menu.Item>
         </div>
-        {/* <div className='px-5 py-1'>
-          <Menu.Item>
-            {({ active }) => (
-              <button>
-                <span className=''>Change State</span>
-              </button>
-            )}
-          </Menu.Item>
-        </div> */}
         <div className='px-1 py-1 '>
           <Menu.Item>
             {({ active }) => (
@@ -324,8 +332,8 @@ function MenuDialog({ theme, toggleTheme }) {
                     <Link
                       className={`${
                         location.pathname == '/'
-                          ? 'cursor-default '
-                          : 'hover:scale-110 transition-transform '
+                          ? 'border-2 border-black font-bold '
+                          : ' '
                       } flex items-center gap-2 py-3 px-7 bg-purple-600 dark:bg-white text-white    dark:text-purple-800 rounded-full text-sm`}
                       to='/'
                     >
@@ -337,8 +345,8 @@ function MenuDialog({ theme, toggleTheme }) {
                     <Link
                       className={`${
                         location.pathname == '/chat'
-                          ? 'cursor-default '
-                          : 'hover:scale-110 transition-transform '
+                          ? 'border-2 border-black font-bold '
+                          : ' '
                       } flex items-center gap-2 py-3 px-7 bg-purple-600 dark:bg-white text-white dark:text-purple-700 rounded-full text-sm mx-auto`}
                       to='/chat'
                     >
