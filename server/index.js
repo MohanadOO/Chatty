@@ -1,5 +1,8 @@
 const app = require('express')()
 const server = require('http').createServer(app)
+const cors = require('cors')
+
+app.use(cors())
 
 const PORT = process.env.PORT || 3001
 
@@ -62,8 +65,6 @@ io.on('connection', (socket) => {
     io.emit('getUsersStatus', users)
   })
 })
-
-
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)

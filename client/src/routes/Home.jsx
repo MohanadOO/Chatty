@@ -47,13 +47,12 @@ function Home({ socket }) {
           >
             Welcome To Chatty
           </motion.h1>
-          <motion.p
+          <motion.h2
             variants={sectionElement}
-            className='text-base xl:text-lg text-gray-700 dark:text-gray-300 max-w-sm xl:max-w-md mb-5'
+            className='text-lg xl:text-xl text-gray-700 dark:text-gray-300 max-w-sm xl:max-w-md mb-5'
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates,
-            quisquam autem molestias praesentium nemo doloribus?
-          </motion.p>
+            Add Friends Join Rooms and Start Chatting.
+          </motion.h2>
         </div>
         <motion.img
           animate={{ scale: 1.1 }}

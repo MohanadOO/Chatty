@@ -137,7 +137,7 @@ function Nav({ defaultTheme, socket }) {
             className='mr-auto text-xl bg-purple-700 py-1 px-8  rounded-lg relative hover:scale-110 transition-transform shadow-md cursor-pointer text-white'
             to='/'
           >
-            Chatter
+            Chatty
             <div className='absolute bottom-0 left-0 border-[12px] border-transparent border-l-purple-700 bg-transparent translate-y-2'></div>
           </Link>
         )}
