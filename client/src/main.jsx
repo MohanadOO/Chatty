@@ -9,7 +9,9 @@ import Chat from './routes/Chat'
 import Home from './routes/Home'
 
 import io from 'socket.io-client'
-const socket = io.connect(import.meta.env.VITE_SERVER_URL)
+const socket = io.connect(import.meta.env.VITE_SERVER_URL, {
+  withCredentials: true,
+})
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
